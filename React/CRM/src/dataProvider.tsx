@@ -1,7 +1,7 @@
 import { fetchUtils, DataProvider, RaRecord, Identifier, GetManyParams, GetManyReferenceParams, UpdateManyParams, DeleteManyParams } from "react-admin";
 import { HttpError } from "react-admin";
 
-const apiUrl = "http://localhost:3000"; // Your API URL
+const apiUrl = "http://localhost:3000";
 const httpClient = fetchUtils.fetchJson;
 
 const dataProvider: DataProvider = {
