@@ -18,7 +18,7 @@ mongoose
   .catch((err) => console.error("Failed to connect to MongoDB", err));
 
 // Schemas y Models de Mongoose
-const clienteSchema = new mongoose.Schema({
+const donadorSchema = new mongoose.Schema({
   nombre: String,
   apellido: String,
   edad: Number,
@@ -33,7 +33,7 @@ const donacionSchema = new mongoose.Schema({
   fecha: String,
 });
 
-const Cliente = mongoose.model("Cliente", clienteSchema);
+const Donador = mongoose.model("Donador", donadorSchema, "donadores");
 const Donacion = mongoose.model("Donacion", donacionSchema, "donaciones");
 
 // Rutas
@@ -41,58 +41,58 @@ app.get("/", (req, res) => {
   res.send("API para CRM de Fundación Sanders - Equipo 3");
 });
 
-// GET clientes
-app.get("/clientes", async (req, res) => {
+// GET donadores
+app.get("/donadores", async (req, res) => {
   try {
-    const clientes = await Cliente.find();
-    res.json(clientes);
+    const donadores = await Donador.find();
+    res.json(donadores);
   } catch (err) {
     res.status(500).send(err.message);
   }
 });
 
-// GET cliente
-app.get("/clientes/:id", async (req, res) => {
+// GET donadores
+app.get("/donadores/:id", async (req, res) => {
   try {
-    const cliente = await Cliente.findById(req.params.id);
-    if (!cliente) return res.status(404).send("Cliente not found");
-    res.json(cliente);
+    const donador = await Donador.findById(req.params.id);
+    if (!donador) return res.status(404).send("Donador not found");
+    res.json(donador);
   } catch (err) {
     res.status(500).send(err.message);
   }
 });
 
-// POST cliente
-app.post("/clientes", async (req, res) => {
+// POST donador
+app.post("/donadores", async (req, res) => {
   try {
-    const newCliente = new Cliente(req.body);
-    await newCliente.save();
-    res.status(201).json(newCliente);
+    const newDonador = new Donador(req.body);
+    await newDonador.save();
+    res.status(201).json(newDonador);
   } catch (err) {
     res.status(400).send(err.message);
   }
 });
 
-// PUT para actualizar un cliente
-app.put("/clientes/:id", async (req, res) => {
+// PUT para actualizar un donador
+app.put("/donadores/:id", async (req, res) => {
   try {
-    const updatedCliente = await Cliente.findByIdAndUpdate(
+    const updatedDonador = await Donador.findByIdAndUpdate(
       req.params.id,
       req.body,
       { new: true }
     );
-    if (!updatedCliente) return res.status(404).send("Cliente not found");
-    res.json(updatedCliente);
+    if (!updatedDonador) return res.status(404).send("Donador not found");
+    res.json(updatedDonador);
   } catch (err) {
     res.status(400).send(err.message);
   }
 });
 
-// DELETE cliente
-app.delete("/clientes/:id", async (req, res) => {
+// DELETE donador
+app.delete("/donadores/:id", async (req, res) => {
   try {
-    const deletedCliente = await Cliente.findByIdAndDelete(req.params.id);
-    if (!deletedCliente) return res.status(404).send("Cliente not found");
+    const deletedDonador = await Donador.findByIdAndDelete(req.params.id);
+    if (!deletedDonador) return res.status(404).send("Donador not found");
     res.status(204).send();
   } catch (err) {
     res.status(500).send(err.message);
@@ -120,7 +120,7 @@ app.get("/donaciones/:id", async (req, res) => {
   }
 });
 
-// POST donacion
+// POST donación
 app.post("/donaciones", async (req, res) => {
   try {
     const newDonacion = new Donacion(req.body);
