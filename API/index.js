@@ -18,12 +18,15 @@ mongoose
   .catch((err) => console.error("Failed to connect to MongoDB", err));
 
 // Schemas y Models de Mongoose
-const donadorSchema = new mongoose.Schema({
+const usuarioSchema = new mongoose.Schema({
   nombre: String,
   apellido: String,
   edad: Number,
   telefono: String,
   email: String,
+  rol: String,
+  usuario: String,
+  password: String,
 });
 
 const donacionSchema = new mongoose.Schema({
@@ -33,7 +36,7 @@ const donacionSchema = new mongoose.Schema({
   fecha: String,
 });
 
-const Donador = mongoose.model("Donador", donadorSchema, "donadores");
+const Usuario = mongoose.model("Usuario", usuarioSchema, "usuarios");
 const Donacion = mongoose.model("Donacion", donacionSchema, "donaciones");
 
 // Rutas
@@ -41,58 +44,58 @@ app.get("/", (req, res) => {
   res.send("API para CRM de Fundación Sanders - Equipo 3");
 });
 
-// GET donadores
-app.get("/donadores", async (req, res) => {
+// GET usuarios
+app.get("/usuarios", async (req, res) => {
   try {
-    const donadores = await Donador.find();
-    res.json(donadores);
+    const usuarios = await Usuario.find();
+    res.json(usuarios);
   } catch (err) {
     res.status(500).send(err.message);
   }
 });
 
-// GET donadores
-app.get("/donadores/:id", async (req, res) => {
+// GET usuarios por id
+app.get("/usuarios/:id", async (req, res) => {
   try {
-    const donador = await Donador.findById(req.params.id);
-    if (!donador) return res.status(404).send("Donador not found");
-    res.json(donador);
+    const usuario = await Usuario.findById(req.params.id);
+    if (!usuario) return res.status(404).send("Usuario not found");
+    res.json(usuario);
   } catch (err) {
     res.status(500).send(err.message);
   }
 });
 
-// POST donador
-app.post("/donadores", async (req, res) => {
+// POST usuario
+app.post("/usuarios", async (req, res) => {
   try {
-    const newDonador = new Donador(req.body);
-    await newDonador.save();
-    res.status(201).json(newDonador);
+    const newUsuario = new Usuario(req.body);
+    await newUsuario.save();
+    res.status(201).json(newUsuario);
   } catch (err) {
     res.status(400).send(err.message);
   }
 });
 
-// PUT para actualizar un donador
-app.put("/donadores/:id", async (req, res) => {
+// PUT para actualizar un usuario
+app.put("/usuarios/:id", async (req, res) => {
   try {
-    const updatedDonador = await Donador.findByIdAndUpdate(
+    const updatedUsuario = await Usuario.findByIdAndUpdate(
       req.params.id,
       req.body,
       { new: true }
     );
-    if (!updatedDonador) return res.status(404).send("Donador not found");
-    res.json(updatedDonador);
+    if (!updatedUsuario) return res.status(404).send("Usuario not found");
+    res.json(updatedUsuario);
   } catch (err) {
     res.status(400).send(err.message);
   }
 });
 
-// DELETE donador
-app.delete("/donadores/:id", async (req, res) => {
+// DELETE usuario
+app.delete("/usuarios/:id", async (req, res) => {
   try {
-    const deletedDonador = await Donador.findByIdAndDelete(req.params.id);
-    if (!deletedDonador) return res.status(404).send("Donador not found");
+    const deletedUsuario = await Usuario.findByIdAndDelete(req.params.id);
+    if (!deletedUsuario) return res.status(404).send("Usuario not found");
     res.status(204).send();
   } catch (err) {
     res.status(500).send(err.message);
@@ -154,6 +157,38 @@ app.delete("/donaciones/:id", async (req, res) => {
     res.status(204).send();
   } catch (err) {
     res.status(500).send(err.message);
+  }
+});
+
+// Endpoint de auth
+
+app.post("/auth", async (req, res) => {
+  const { usuario, password } = req.body;
+
+  console.log(usuario, password);
+  try {
+    const user = await Usuario.findOne({ usuario });
+
+    if (user) {
+      console.log("User found: \n", user);
+    } else {
+      console.log("User not found!");
+      return res.status(401).json({ success: false, message: "Invalid credentials" });
+    }
+
+    if (user.password == password) {
+      console.log("Password match!");
+    } else {
+      console.log("Password does not match!");
+    }
+
+    if (user && password == user.password) {
+      return res.status(200).json({ success: true, message: "Access granted" });
+    } else {
+      return res.status(401).json({ success: false, message: "Invalid credentials" });
+    }
+  } catch (error) {
+    return res.status(500).json({ success: false, message: "Server error" });
   }
 });
 
