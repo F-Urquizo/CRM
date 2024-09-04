@@ -162,7 +162,6 @@ app.delete("/donaciones/:id", async (req, res) => {
 
 // Endpoint de auth
 
-// Endpoint de autenticación modificado
 app.post("/auth", async (req, res) => {
   const { usuario, password } = req.body;
 

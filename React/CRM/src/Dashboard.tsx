@@ -1,20 +1,20 @@
 import React from 'react';
 import { Card, CardContent, CardHeader } from "@mui/material";
-import { usePermissions } from 'react-admin'; // Importa usePermissions
+import { usePermissions } from 'react-admin';
 
 export const Dashboard = () => {
-  const { permissions } = usePermissions(); // Usamos usePermissions para obtener los permisos del usuario
+  const { permissions } = usePermissions();
 
   return (
     <Card>
-      <CardHeader title="Welcome..." />
+      <CardHeader title="Bienvenido..." />
       <CardContent>
-        {permissions === 'admin' ? (
-          <p>Welcome Admin! You have full access to the system.</p>
+        {permissions === 'Admin' ? (
+          <p>Bienvenido Admin! Tienes acceso completo al sistema!</p>
         ) : permissions === 'Donador' ? (
-          <p>Welcome User! You have limited access.</p>
+          <p>Bienvenido Donador! Gracias por tu donación!</p>
         ) : (
-          <p>You do not have permissions to view this content.</p>
+          <p>Bienvenido! Por favor contacta soporte si necesitas acceso a más componentes del sistema.</p>
         )}
       </CardContent>
     </Card>

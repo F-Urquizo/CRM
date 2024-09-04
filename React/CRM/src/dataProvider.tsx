@@ -7,7 +7,6 @@ const httpClient = fetchUtils.fetchJson;
 const dataProvider: DataProvider = {
   getList: async (resource, params) => {
     const response = await httpClient(`${apiUrl}/${resource}`);
-    // Map _id to id
     const data = response.json.map((item: any) => ({
       ...item,
       id: item._id,

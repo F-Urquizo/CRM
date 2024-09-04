@@ -14,7 +14,7 @@ import {Dashboard} from "./Dashboard";
 import CustomLayout from './CustomLayout';
 
 export const App = () => (
-  <Admin authProvider={authProvider} layout={CustomLayout} dashboard= {Dashboard}dataProvider={dataProvider}>
+  <Admin authProvider={authProvider} layout={CustomLayout} dashboard= {Dashboard} dataProvider={dataProvider}>
     <Resource name="usuarios" list={UsuariosList} edit={UsuariosEdit} create={UsuariosCreate} ></Resource>
     <Resource name="donaciones" list={DonacionesList} edit={DonacionesEdit} create={DonacionesCreate}></Resource>
   </Admin>

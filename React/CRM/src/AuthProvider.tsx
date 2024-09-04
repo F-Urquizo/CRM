@@ -1,4 +1,3 @@
-// src/authProvider.ts
 import { AuthProvider } from "react-admin";
 import axios from "axios";
 
