@@ -1,19 +1,21 @@
+// src/authProvider.ts
 import { AuthProvider } from "react-admin";
 import axios from "axios";
 
 export const authProvider: AuthProvider = {
-    // called when the user attempts to log in
+    // llamado cuando el usuario intenta iniciar sesión
     login: async ({ username, password }) => {
         try {
-            // Send the username and password to the backend for authentication
+            // Envía el nombre de usuario y la contraseña al backend para autenticación
             const response = await axios.post("http://localhost:3000/auth", {
                 usuario: username,
                 password: password,
             });
 
-            // If authentication is successful, store the username in localStorage
+            // Si la autenticación es exitosa, almacena el nombre de usuario y el rol en localStorage
             if (response.data.success) {
                 localStorage.setItem("username", username);
+                localStorage.setItem("rol", response.data.rol); // Almacena el rol del usuario
                 return Promise.resolve();
             } else {
                 return Promise.reject("Invalid credentials");
@@ -24,28 +26,33 @@ export const authProvider: AuthProvider = {
         }
     },
 
-    // called when the user clicks on the logout button
+    // llamado cuando el usuario hace clic en el botón de cerrar sesión
     logout: () => {
         localStorage.removeItem("username");
+        localStorage.removeItem("rol"); // Elimina el rol del usuario
         return Promise.resolve();
     },
 
-    // called when the API returns an error
+    // llamado cuando la API devuelve un error
     checkError: ({ status }: { status: number }) => {
         if (status === 401 || status === 403) {
             localStorage.removeItem("username");
+            localStorage.removeItem("rol"); // Elimina el rol si hay un error de autenticación
             return Promise.reject();
         }
         return Promise.resolve();
     },
 
-    // called when the user navigates to a new location, to check for authentication
+    // llamado cuando el usuario navega a una nueva ubicación, para verificar la autenticación
     checkAuth: () => {
         return localStorage.getItem("username")
             ? Promise.resolve()
             : Promise.reject();
     },
 
-    // called when the user navigates to a new location, to check for permissions / roles
-    getPermissions: () => Promise.resolve(),
+    // llamado cuando el usuario navega a una nueva ubicación, para verificar permisos / roles
+    getPermissions: () => {
+        const role = localStorage.getItem('rol');
+        return role ? Promise.resolve(role) : Promise.reject();
+    },
 };

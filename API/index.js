@@ -162,35 +162,32 @@ app.delete("/donaciones/:id", async (req, res) => {
 
 // Endpoint de auth
 
+// Endpoint de autenticación modificado
 app.post("/auth", async (req, res) => {
   const { usuario, password } = req.body;
 
-  console.log(usuario, password);
   try {
     const user = await Usuario.findOne({ usuario });
 
-    if (user) {
-      console.log("User found: \n", user);
-    } else {
-      console.log("User not found!");
+    if (!user) {
       return res.status(401).json({ success: false, message: "Invalid credentials" });
     }
 
-    if (user.password == password) {
-      console.log("Password match!");
-    } else {
-      console.log("Password does not match!");
-    }
-
-    if (user && password == user.password) {
-      return res.status(200).json({ success: true, message: "Access granted" });
-    } else {
+    if (user.password !== password) {
       return res.status(401).json({ success: false, message: "Invalid credentials" });
     }
+
+    // Si el usuario existe y la contraseña coincide, devolver rol junto con la respuesta
+    return res.status(200).json({
+      success: true,
+      message: "Access granted",
+      rol: user.rol, // Incluir el rol del usuario en la respuesta
+    });
   } catch (error) {
     return res.status(500).json({ success: false, message: "Server error" });
   }
 });
+
 
 // Inicialización del servidor
 app.listen(port, () => {

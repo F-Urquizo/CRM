@@ -22,6 +22,7 @@ import {
   } from "react-admin";
 
   export const DonacionesList = () => (
+    
     <List>
         <Datagrid>
         <TextField source="id" />
