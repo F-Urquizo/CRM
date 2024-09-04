@@ -18,7 +18,7 @@ import {
   ImageInput,
 } from "react-admin";
 
-export const DonadoresList = () => (
+export const UsuariosList = () => (
   <List>
     <Datagrid>
       <TextField source="id" />
@@ -27,12 +27,15 @@ export const DonadoresList = () => (
       <TextField source="edad" />
       <TextField source="telefono" />
       <EmailField source="email" />
+      <TextField source="rol" />
+      <TextField source="usuario" />
+      <TextField source="password" />
       <EditButton />
     </Datagrid>
   </List>
 );
 
-export const DonadoresEdit = () => (
+export const UsuariosEdit = () => (
   <Edit>
     <SimpleForm>
       <TextInput source="id" InputProps={{ disabled: true }} />
@@ -41,11 +44,14 @@ export const DonadoresEdit = () => (
       <TextInput source="edad" />
       <TextInput source="telefono" />
       <TextInput source="email" />
+      <TextInput source="rol" />
+      <TextInput source="usuario" />
+      <TextInput source="password" />
     </SimpleForm>
   </Edit>
 );
 
-export const DonadoresCreate = () => (
+export const UsuariosCreate = () => (
   <Create>
     <SimpleForm>
       <TextInput source="id" InputProps={{ disabled: true }} />
@@ -54,6 +60,9 @@ export const DonadoresCreate = () => (
       <TextInput source="edad" />
       <TextInput source="telefono" />
       <TextInput source="email" />
+      <TextInput source="rol" />
+      <TextInput source="usuario" />
+      <TextInput source="password" />
     </SimpleForm>
   </Create>
 );
