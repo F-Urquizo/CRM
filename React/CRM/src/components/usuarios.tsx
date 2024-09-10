@@ -27,7 +27,7 @@ export const UsuariosList = () => (
       <TextField source="edad" />
       <TextField source="telefono" />
       <EmailField source="email" />
-      <TextField source="rol" />
+      {/*<TextField source="rol" />*/}
       <TextField source="usuario" />
       <TextField source="password" />
       <EditButton />
