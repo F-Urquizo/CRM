@@ -1,0 +1,85 @@
+.navbar {
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--main-bg);
+}
+
+.navbar .logo {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  gap: 10px;
+}
+
+.navbar .logo img {
+  width: 30px;
+  height: auto;
+}
+
+.navbar .icons {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  position: relative; /* Para manejar el menú desplegable */
+}
+
+.navbar .icons .notification {
+  position: relative;
+}
+
+.navbar .icons .notification span {
+  background-color: red;
+  color: white;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+
+.navbar .icons .user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.navbar .icons .user img {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Estilos para el menú de configuración desplegable */
+.settings-menu {
+  position: absolute;
+  right: 0;
+  top: 50px; /* Ajusta según la posición de tu navbar */
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* Asegura que esté sobre otros elementos */
+}
+
+.settings-menu button {
+  background: none;
+  border: none;
+  color: red;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 5px 10px;
+}
+
+.settings-menu button:hover {
+  text-decoration: underline;
+}
