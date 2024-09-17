@@ -30,7 +30,7 @@ export const menuAdmin = [
       {
         id: 2,
         title: "Donaciones",
-        url: "/products",
+        url: "/donaciones",
         icon: "donaciones.png",
       },
       {
