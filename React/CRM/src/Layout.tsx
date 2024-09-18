@@ -12,7 +12,9 @@ export const Layout = ({ children }: { children: ReactNode }) => (
       <div className="menuContainer">
         <Menu />
       </div>
-      <div className="contentContainer">{children}</div>
+      <div className="contentContainer">
+        {children}
+      </div>
     </div>
     <div className="footerContainer">
       <Footer />

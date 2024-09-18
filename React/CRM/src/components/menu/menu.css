@@ -19,12 +19,13 @@
 .menu .item .listItem {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
   padding: 10px;
   border-radius: 5px;
   width: 100%;
   box-sizing: border-box;
-  overflow: hidden;
+  overflow: visible;
+  white-space: nowrap;
 }
 
 .menu .item .listItem img {
@@ -36,4 +37,5 @@
 
 .menu .item .listItem:hover {
   background-color: var(--soft-bg);
+  cursor: pointer;
 }

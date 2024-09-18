@@ -19,7 +19,7 @@ export const Navbar = () => {
     <div className="navbar">
       <div className="logo">
         <img src="logo.png" alt="Fundación Sanders logo" />
-        <span className="titulo">Fundación Sanders</span>
+        <span className="titulo">Sanders Foundation</span>
       </div>
       <div className="icons">
         <img src="/search.svg" alt="Search" className="icon" />
