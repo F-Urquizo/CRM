@@ -7,6 +7,13 @@ import "./menu.css";
 import { menuAdmin } from "../../menuAdmin";
 import { menuUsuario } from "../../menuUsuarios";
 
+const handleLogout = () => {
+  // Lógica para cerrar sesión
+  localStorage.removeItem("username");
+  localStorage.removeItem("rol");
+  window.location.reload(); // Recarga la página para aplicar el log out
+};
+
 const CustomMenu = (props: MenuProps) => {
   const { permissions } = usePermissions();
 

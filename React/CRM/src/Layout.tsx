@@ -6,15 +6,15 @@ import "./styles/global.css";
 import { Layout as RALayout } from "react-admin";
 
 export const Layout = ({ children }: { children: ReactNode }) => (
-  <div className="layout">
+  <div className="main">
     <Navbar />
-    <div className="main">
-      <div className="container">
-        <div className="menuContainer">
-          <Menu />
-        </div>
-        <div className="contentContainer">{children}</div>
+    <div className="layout">
+      <div className="menuContainer">
+        <Menu />
       </div>
+      <div className="contentContainer">{children}</div>
+    </div>
+    <div className="footerContainer">
       <Footer />
     </div>
   </div>

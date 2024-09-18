@@ -21,15 +21,12 @@ import {
 export const UsuariosList = () => (
   <List>
     <Datagrid>
-      <TextField source="id" />
       <TextField source="nombre" />
       <TextField source="apellido" />
       <TextField source="edad" />
       <TextField source="telefono" />
       <EmailField source="email" />
       {/*<TextField source="rol" />*/}
-      <TextField source="usuario" />
-      <TextField source="password" />
       <EditButton />
     </Datagrid>
   </List>

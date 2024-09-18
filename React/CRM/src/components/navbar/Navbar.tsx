@@ -18,8 +18,8 @@ export const Navbar = () => {
   return (
     <div className="navbar">
       <div className="logo">
-        <img src="logo.jpeg" alt="Fundación Sanders logo" />
-        <span>Fundación Sanders</span>
+        <img src="logo.png" alt="Fundación Sanders logo" />
+        <span className="titulo">Fundación Sanders</span>
       </div>
       <div className="icons">
         <img src="/search.svg" alt="Search" className="icon" />

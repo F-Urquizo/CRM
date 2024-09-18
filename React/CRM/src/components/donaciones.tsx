@@ -25,10 +25,9 @@ import {
     
     <List>
         <Datagrid>
-        <TextField source="id" />
         <TextField source="cliente" />
-        <TextField source="formaDePago" />
         <TextField source="cantidad" /> 
+        <TextField source="formaDePago" />
         <DateField source="fecha" /> 
         <EditButton />
         </Datagrid>
@@ -40,8 +39,8 @@ import {
       <SimpleForm>
         <TextInput source="id" InputProps={{ disabled: true }} />
         <TextInput source="cliente" />
-        <TextInput source="formaDePago" />
         <TextInput source="cantidad" /> 
+        <TextInput source="formaDePago" />
         <DateInput source="fecha" /> 
       </SimpleForm>
     </Edit>
@@ -52,8 +51,8 @@ import {
       <SimpleForm>
         <TextInput source="id" InputProps={{ disabled: true }} />
         <TextInput source="cliente" />
-        <TextInput source="formaDePago" />
         <TextInput source="cantidad" /> 
+        <TextInput source="formaDePago" />
         <DateInput source="fecha" /> 
       </SimpleForm>
     </Create>

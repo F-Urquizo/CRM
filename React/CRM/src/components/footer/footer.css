@@ -2,13 +2,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 30px;
+  padding: 4px;
 }
 
-.footer span:first-child {
-  font-weight: bold;
-}
-
-.footer span:last-child {
+.footer span {
   font-size: 14px;
+  font-style: italic;
+  color: var(--soft-color);
 }
