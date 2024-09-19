@@ -26,14 +26,24 @@ const CustomMenu = (props: MenuProps) => {
               <span className="title">{item.title}</span>
               {item.listItems.map((listItem) => (
                 <Link to={listItem.url} className="listItem" key={listItem.id}>
-                  <img src={listItem.icon} alt="icon"/>
+                  <img src={listItem.icon} alt="icon" />
                   <span className="listItemTitle">{listItem.title}</span>
                 </Link>
               ))}
             </div>
           ))}
+
+          {/* Botón de Log Out con el mismo estilo */}
+          <div className="item">
+            <span className="title">SESION</span>
+            <div className="listItem" onClick={handleLogout}>
+              <img src="logout.png" alt="Log Out Icon" />
+              <span className="listItemTitle">Log Out</span>
+            </div>
+          </div>
         </div>
       )}
+
 
       {permissions === "Donador" && (
         <div className="menu">

@@ -23,16 +23,4 @@ export const menuAdmin = [
       }
     ],
   },
-  {
-    id: 2,
-    title: "SESION",
-    listItems: [
-      {
-        id: 1,
-        title: "Log Out",
-        url: "/logout",
-        icon: "logout.png",
-      },
-    ],
-  },
 ];

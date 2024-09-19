@@ -36,6 +36,11 @@ html, body {
   width: 250px;
   padding: 5px 20px;
   background-color: var(--main-bg);
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .menu{
