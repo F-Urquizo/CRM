@@ -8,21 +8,22 @@ import {
 import { Layout } from "./Layout";
 import dataProvider from "./dataProvider";
 import { authProvider } from "./AuthProvider";
+import Dashboard from "./Pages/dashboard/dashboard";
 import {
   DashboardList,
   DashboardEdit,
   DashboardCreate,
-} from "./components/Pages/dashboard";
+} from "./Pages/dashboard/dashboard";
 import {
   UsuariosList,
   UsuariosEdit,
   UsuariosCreate,
-} from "./components/Pages/usuarios";
+} from "./Pages/usuarios";
 import {
   DonacionesList,
   DonacionesEdit,
   DonacionesCreate,
-} from "./components/Pages/donaciones";
+} from "./Pages/donaciones";
 import "./styles/global.css";
 import "./styles/variables.css";
 
@@ -31,13 +32,14 @@ export const App = () => (
     authProvider={authProvider}
     layout={Layout}
     dataProvider={dataProvider}
+    dashboard={Dashboard}
   >
     <Resource 
       name="dashboard" 
       list={DashboardList}
       edit={DashboardEdit}
       create={DashboardCreate}
-      ></Resource>
+    ></Resource>
     <Resource
       name="usuarios"
       list={UsuariosList}

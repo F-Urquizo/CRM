@@ -7,13 +7,13 @@ const httpClient = fetchUtils.fetchJson;
 const dataProvider: DataProvider = {
   getList: async (resource, params) => {
     const response = await httpClient(`${apiUrl}/${resource}`);
-    const data = response.json.map((item: any) => ({
+    const data = Array.isArray(response.json) ? response.json.map((item: any) => ({
       ...item,
       id: item._id,
-    }));
+    })) : [];
     return {
       data,
-      total: response.json.length, 
+      total: Array.isArray(response.json) ? response.json.length : 0,
     };
   },
 

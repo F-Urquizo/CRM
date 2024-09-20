@@ -5,6 +5,7 @@
   align-items: center;
   justify-content: space-between;
   background-color: var(--dark-bg);
+  border-bottom: 1px solid var(--soft-bg);
 }
 
 .navbar .logo {
