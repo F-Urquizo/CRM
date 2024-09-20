@@ -33,15 +33,66 @@ const donacionSchema = new mongoose.Schema({
   cliente: String,
   formaDePago: String,
   cantidad: Number,
-  fecha: String,
+  fecha: { type: Date, default: Date.now },
+});
+
+const gastoSchema = new mongoose.Schema({
+  descripcion: String,
+  cantidad: Number,
+  fecha: { type: Date, default: Date.now },
+  categoria: String
 });
 
 const Usuario = mongoose.model("Usuario", usuarioSchema, "usuarios");
 const Donacion = mongoose.model("Donacion", donacionSchema, "donaciones");
+const Gasto = mongoose.model("Gasto", gastoSchema, "gastos");
 
 // Rutas
 app.get("/", (req, res) => {
   res.send("API para CRM de Fundación Sanders - Equipo 3");
+});
+
+// GET gastos
+app.get("/gastos", async (req, res) => {
+  try {
+    const gastos = await Gasto.find();
+    res.json(gastos);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
+
+// POST gastos
+app.post("/gastos", async (req, res) => {
+  try {
+    const newGasto = new Gasto(req.body);
+    await newGasto.save();
+    res.status(201).json(newGasto);
+  } catch (err) {
+    res.status(400).send(err.message);
+  }
+});
+
+// PUT para actualizar un gasto
+app.put("/gastos/:id", async (req, res) => {
+  try {
+    const updatedGasto = await Gasto.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!updatedGasto) return res.status(404).send("Gasto not found");
+    res.json(updatedGasto);
+  } catch (err) {
+    res.status(400).send(err.message);
+  }
+});
+
+// DELETE gasto
+app.delete("/gastos/:id", async (req, res) => {
+  try {
+    const deletedGasto = await Gasto.findByIdAndDelete(req.params.id);
+    if (!deletedGasto) return res.status(404).send("Gasto not found");
+    res.status(204).send();
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
 });
 
 // GET usuarios
@@ -160,8 +211,149 @@ app.delete("/donaciones/:id", async (req, res) => {
   }
 });
 
-// Endpoint de auth
+// Endpoints Gráficas
+// Top 5 donaciones
+app.get("/dashboard/top-donaciones", async (req, res) => {
+  try {
+    const topDonaciones = await Donacion.find().sort({ cantidad: -1 }).limit(5);
+    res.json(topDonaciones);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
 
+//Total de donaciones
+app.get("/dashboard/total-donaciones", async (req, res) => {
+  try {
+    const totalDonaciones = await Donacion.aggregate([
+      {
+        $group: {
+          _id: null,
+          total: { $sum: "$cantidad" }
+        }
+      }
+    ]);
+    res.json({ total: totalDonaciones[0]?.total || 0 });
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
+
+//Total Gastos
+app.get("/dashboard/total-gastos", async (req, res) => {
+  try {
+    const totalGastos = await Gasto.aggregate([
+      {
+        $group: {
+          _id: null,
+          total: { $sum: "$cantidad" }
+        }
+      }
+    ]);
+    res.json({ total: totalGastos[0]?.total || 0 });
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
+
+//Promedio de donaciones
+app.get("/dashboard/promedio-donaciones", async (req, res) => {
+  try {
+    const promedioDonaciones = await Donacion.aggregate([
+      {
+        $group: {
+          _id: null,
+          promedio: { $avg: "$cantidad" }
+        }
+      }
+    ]);
+    res.json({ promedio: promedioDonaciones[0]?.promedio || 0 });
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
+
+//Cant de donaciones 
+app.get("/dashboard/cantidad-donaciones", async (req, res) => {
+  try {
+    const cantidadDonaciones = await Donacion.countDocuments();
+    res.json({ total: cantidadDonaciones });
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
+
+//Donaciones por tipo de pago
+app.get("/dashboard/tipo-pago", async (req, res) => {
+  try {
+    const tipoPago = await Donacion.aggregate([
+      {
+        $group: {
+          _id: "$formaDePago",
+          total: { $sum: 1 }
+        }
+      }
+    ]);
+    res.json(tipoPago);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
+
+//Donaciones por mes
+app.get("/dashboard/donaciones-por-mes", async (req, res) => {
+  try {
+    const donacionesPorMes = await Donacion.aggregate([
+      {
+        $group: {
+          _id: { $month: { $toDate: "$fecha" } },
+          totalDonaciones: { $sum: "$cantidad" }
+        }
+      },
+      { $sort: { "_id": 1 } }
+    ]);
+    res.json(donacionesPorMes);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
+
+//Gastos por mes
+app.get("/dashboard/gastos-por-mes", async (req, res) => {
+  try {
+    const gastosPorMes = await Gasto.aggregate([
+      {
+        $group: {
+          _id: { $month: { $toDate: "$fecha" } },
+          totalGastos: { $sum: "$cantidad" }
+        }
+      },
+      { $sort: { "_id": 1 } }
+    ]);
+    res.json(gastosPorMes);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
+
+//Progreso del proyecto
+app.get("/dashboard/progreso-proyecto", async (req, res) => {
+  try {
+    const totalDonaciones = await Donacion.aggregate([
+      { $group: { _id: null, total: { $sum: "$cantidad" } } }
+    ]);
+    const meta = 300000; // Meta fija
+    const recaudado = totalDonaciones[0]?.total || 0;
+    const porcentaje = (recaudado / meta) * 100;
+
+    res.json({ recaudado, faltante: meta - recaudado, porcentaje });
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
+
+
+// Endpoint de auth
 app.post("/auth", async (req, res) => {
   const { usuario, password } = req.body;
 
