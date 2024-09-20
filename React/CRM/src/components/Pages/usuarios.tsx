@@ -36,14 +36,14 @@ export const UsuariosEdit = () => (
   <Edit>
     <SimpleForm>
       <TextInput source="id" InputProps={{ disabled: true }} />
-      <TextInput source="nombre" />
-      <TextInput source="apellido" />
+      <TextInput source="nombre" validate={required()}/>
+      <TextInput source="apellido" validate={required()}/>
       <TextInput source="edad" />
       <TextInput source="telefono" />
-      <TextInput source="email" />
-      <TextInput source="rol" />
-      <TextInput source="usuario" />
-      <TextInput source="password" />
+      <TextInput source="email" validate={required()}/>
+      <TextInput source="rol" validate={required()}/>
+      <TextInput source="usuario" validate={required()}/>
+      <TextInput source="password" validate={required()}/>
     </SimpleForm>
   </Edit>
 );
@@ -52,14 +52,14 @@ export const UsuariosCreate = () => (
   <Create>
     <SimpleForm>
       <TextInput source="id" InputProps={{ disabled: true }} />
-      <TextInput source="nombre" />
-      <TextInput source="apellido" />
+      <TextInput source="nombre" validate={required()}/>
+      <TextInput source="apellido" validate={required()}/>
       <TextInput source="edad" />
       <TextInput source="telefono" />
-      <TextInput source="email" />
-      <TextInput source="rol" />
-      <TextInput source="usuario" />
-      <TextInput source="password" />
+      <TextInput source="email" validate={required()}/>
+      <TextInput source="rol" validate={required()}/>
+      <TextInput source="usuario" validate={required()}/>
+      <TextInput source="password" validate={required()} />
     </SimpleForm>
   </Create>
 );

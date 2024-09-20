@@ -5,6 +5,7 @@ import {
     InputProps,
     TextField,
     TextInput,
+    SelectInput,
     EmailField,
     ReferenceField,
     ReferenceInput,
@@ -38,9 +39,17 @@ import {
     <Edit>
       <SimpleForm>
         <TextInput source="id" InputProps={{ disabled: true }} />
-        <TextInput source="cliente" />
-        <TextInput source="cantidad" /> 
-        <TextInput source="formaDePago" />
+        <TextInput source="cliente" validate={required()}/>
+        <TextInput source="cantidad" validate={required()}/> 
+        <SelectInput 
+          source="formaDePago" 
+          choices={[
+            { id: 'tarjeta', name: 'Tarjeta' },
+            { id: 'efectivo', name: 'Efectivo' },
+            { id: 'transferencia', name: 'Transferencia' }
+          ]}
+          validate={required()}
+        />
         <DateInput source="fecha" /> 
       </SimpleForm>
     </Edit>
@@ -50,9 +59,17 @@ import {
     <Create>
       <SimpleForm>
         <TextInput source="id" InputProps={{ disabled: true }} />
-        <TextInput source="cliente" />
-        <TextInput source="cantidad" /> 
-        <TextInput source="formaDePago" />
+        <TextInput source="cliente" validate={required()}/>
+        <TextInput source="cantidad" validate={required()}/> 
+        <SelectInput 
+          source="formaDePago" 
+          choices={[
+            { id: 'tarjeta', name: 'Tarjeta' },
+            { id: 'efectivo', name: 'Efectivo' },
+            { id: 'transferencia', name: 'Transferencia' }
+          ]}
+          validate={required()}
+        />
         <DateInput source="fecha" /> 
       </SimpleForm>
     </Create>

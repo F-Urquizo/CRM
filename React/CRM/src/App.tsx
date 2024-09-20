@@ -12,7 +12,7 @@ import {
   DashboardList,
   DashboardEdit,
   DashboardCreate,
-} from "./components/Pages/dashboardAdmin";
+} from "./components/Pages/dashboard";
 import {
   UsuariosList,
   UsuariosEdit,
@@ -25,7 +25,6 @@ import {
 } from "./components/Pages/donaciones";
 import "./styles/global.css";
 import "./styles/variables.css";
-import { Dashboard } from "./Dashboard";
 
 export const App = () => (
   <Admin
