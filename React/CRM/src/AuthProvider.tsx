@@ -6,7 +6,7 @@ export const authProvider: AuthProvider = {
     login: async ({ username, password }) => {
         try {
             // Envía el nombre de usuario y la contraseña al backend para autenticación
-            const response = await axios.post("http://localhost:3000/auth", {
+            const response = await axios.post("https://localhost:3000/auth", {
                 usuario: username,
                 password: password,
             });

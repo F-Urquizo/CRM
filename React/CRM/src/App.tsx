@@ -24,8 +24,8 @@ import { Dashboard } from "./Dashboard";
 
 export const App = () => (
   <Admin
-    authProvider={authProvider}
     layout={Layout}
+    authProvider={authProvider}
     dataProvider={dataProvider}
   >
     <Resource
