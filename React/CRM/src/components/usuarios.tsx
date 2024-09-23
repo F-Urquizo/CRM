@@ -29,7 +29,7 @@ export const UsuariosList = () => (
       <EmailField source="email" />
       {/*<TextField source="rol" />*/}
       <TextField source="usuario" />
-      <TextField source="password" />
+      {/*<TextField source="password" />*/}
       <EditButton />
     </Datagrid>
   </List>

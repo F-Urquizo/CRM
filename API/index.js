@@ -1,6 +1,14 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
+import https from "https";
+import fs from "fs";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import dotenv from 'dotenv';
+dotenv.config();
+
+
 
 // Inicializar app Express
 const app = express();
@@ -64,7 +72,7 @@ app.get("/usuarios/:id", async (req, res) => {
     res.status(500).send(err.message);
   }
 });
-
+/*
 // POST usuario
 app.post("/usuarios", async (req, res) => {
   try {
@@ -75,6 +83,21 @@ app.post("/usuarios", async (req, res) => {
     res.status(400).send(err.message);
   }
 });
+*/
+
+// POST usuario
+app.post("/usuarios", async (req, res) => {
+  try {
+    const { nombre, apellido, edad, telefono, email, rol, usuario, password } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10); // Hash the password
+    const newUsuario = new Usuario({ nombre, apellido, edad, telefono, email, rol, usuario, password: hashedPassword }); // Create a new Usuario instance with the hashed password
+    await newUsuario.save(); // Save the new user
+    res.status(201).json(newUsuario); // Return the new user in the response
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
+
 
 // PUT para actualizar un usuario
 app.put("/usuarios/:id", async (req, res) => {
@@ -101,6 +124,18 @@ app.delete("/usuarios/:id", async (req, res) => {
     res.status(500).send(err.message);
   }
 });
+
+// DELETE MANY
+app.delete("/usuarios", async (req, res) => {
+  try {
+    const { ids } = req.body;
+    const deletedUsuarios = await Usuario.deleteMany({ _id: { $in: ids } });
+    res.status(204).send();
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
+
 
 // GET donaciones
 app.get("/donaciones", async (req, res) => {
@@ -160,8 +195,9 @@ app.delete("/donaciones/:id", async (req, res) => {
   }
 });
 
-// Endpoint de auth
 
+/*
+// Endpoint de auth
 app.post("/auth", async (req, res) => {
   const { usuario, password } = req.body;
 
@@ -186,9 +222,53 @@ app.post("/auth", async (req, res) => {
     return res.status(500).json({ success: false, message: "Server error" });
   }
 });
+*/
 
+// Endpoint de auth
+app.post("/auth", async (req, res) => {
+  const { usuario, password } = req.body;
+
+  console.log("Received login request:", { usuario, password });
+
+  try {
+    const user = await Usuario.findOne({ usuario });
+    console.log("User found:", user);
+
+    if (!user) {
+      console.log("User not found");
+      return res.status(401).json({ success: false, message: "Invalid credentials" });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    console.log("Password match result:", isMatch);
+
+    if (!isMatch) {
+      console.log("Incorrect password");
+      return res.status(401).json({ success: false, message: "Invalid credentials" });
+    }
+
+    const token = jwt.sign({ userId: user._id, role: user.rol }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    console.log("Token generated:", token);
+
+    res.json({ success: true, token, rol: user.rol });
+  } catch (err) {
+    console.error("Authentication error:", err);
+    res.status(500).json({ error: "Server Error" });
+  }
+});
+
+
+
+const privateKey = fs.readFileSync('../HTTPS/server.key', 'utf8');
+const certificate = fs.readFileSync('../HTTPS/server.crt', 'utf8');
+const ca = fs.readFileSync('../HTTPS/ca.crt', 'utf8');
+const credentials = { key: privateKey, cert: certificate, ca: ca };
+
+//Servidor HTTPS
+const httpsServer = https.createServer(credentials, app);
+httpsServer.listen(port, () => console.log(`Server running on port ${port} with HTTPS`));
 
 // Inicialización del servidor
-app.listen(port, () => {
-  console.log(`Listening on port ${port}`);
-});
+//app.listen(port, () => {
+//  console.log(`Listening on port ${port}`);
+//});

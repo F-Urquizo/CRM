@@ -1,7 +1,7 @@
 import { fetchUtils, DataProvider, RaRecord, Identifier, GetManyParams, GetManyReferenceParams, UpdateManyParams, DeleteManyParams } from "react-admin";
 import { HttpError } from "react-admin";
 
-const apiUrl = "http://localhost:3000";
+const apiUrl = "https://localhost:3000";
 const httpClient = fetchUtils.fetchJson;
 
 const dataProvider: DataProvider = {
@@ -62,7 +62,7 @@ const dataProvider: DataProvider = {
       return {
         data: {
           ...response.json,
-          id: response.json._id,
+          /*id: response.json._id,*/
         },
       };
   },
