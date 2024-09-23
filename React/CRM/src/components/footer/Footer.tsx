@@ -4,8 +4,8 @@ import "./footer.css";
 export const Footer = () => {
   return (
     <div className="footer">
-      <span>Fundación Sanders</span>
-      <span>© Fundación Sanders Dashboard</span>
+      <span>Administrative Dashboard</span>
+      <span>® Fundación Sanders</span>
     </div>
   );
 };

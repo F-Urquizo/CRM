@@ -1,6 +1,11 @@
 .menu {
   max-width: 200px;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 80vh;
+  padding: 10px 25px 0px 20px;
 }
 
 .menu .item {
@@ -19,12 +24,14 @@
 .menu .item .listItem {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
   padding: 10px;
   border-radius: 5px;
   width: 100%;
   box-sizing: border-box;
-  overflow: hidden;
+  overflow: visible;
+  white-space: nowrap;
+  border-bottom: 1px dotted var(--soft-bg);
 }
 
 .menu .item .listItem img {
@@ -36,4 +43,13 @@
 
 .menu .item .listItem:hover {
   background-color: var(--soft-bg);
+  cursor: pointer;
+}
+
+.menu .logout-item {
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  background-color: var(--menu-bg-color); /* Esto mantiene el fondo cuando esté fijado */
+  padding-top: 10px;
 }

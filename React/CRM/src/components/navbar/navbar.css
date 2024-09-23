@@ -4,7 +4,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: var(--main-bg);
+  background-color: var(--dark-bg);
+  border-bottom: 1px solid var(--soft-bg);
 }
 
 .navbar .logo {
@@ -15,7 +16,7 @@
 }
 
 .navbar .logo img {
-  width: 30px;
+  width: 40px;
   height: auto;
 }
 
@@ -78,6 +79,10 @@
   cursor: pointer;
   font-size: 14px;
   padding: 5px 10px;
+}
+
+.titulo{
+  font-size:large;
 }
 
 .settings-menu button:hover {

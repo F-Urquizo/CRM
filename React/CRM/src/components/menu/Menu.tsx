@@ -7,6 +7,13 @@ import "./menu.css";
 import { menuAdmin } from "../../menuAdmin";
 import { menuUsuario } from "../../menuUsuarios";
 
+const handleLogout = () => {
+  // Lógica para cerrar sesión
+  localStorage.removeItem("username");
+  localStorage.removeItem("rol");
+  window.location.reload(); // Recarga la página para aplicar el log out
+};
+
 const CustomMenu = (props: MenuProps) => {
   const { permissions } = usePermissions();
 
@@ -19,14 +26,24 @@ const CustomMenu = (props: MenuProps) => {
               <span className="title">{item.title}</span>
               {item.listItems.map((listItem) => (
                 <Link to={listItem.url} className="listItem" key={listItem.id}>
-                  <img src={listItem.icon} alt="" />
+                  <img src={listItem.icon} alt="icon" />
                   <span className="listItemTitle">{listItem.title}</span>
                 </Link>
               ))}
             </div>
           ))}
+
+          {/* Botón de Log Out con el mismo estilo */}
+          <div className="item">
+            <span className="title">SESION</span>
+            <div className="listItem" onClick={handleLogout}>
+              <img src="logout.png" alt="Log Out Icon" />
+              <span className="listItemTitle">Log Out</span>
+            </div>
+          </div>
         </div>
       )}
+
 
       {permissions === "Donador" && (
         <div className="menu">

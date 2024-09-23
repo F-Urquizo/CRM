@@ -1,10 +1,10 @@
 :root {
   /* BG */
-  --main-bg: #2a3447;
-  --soft-bg: #384256;
-  --dark-bg: #222b3c;
+  --main-bg: #23295B;
+  --soft-bg: #b1b2c477;
+  --dark-bg: #030C40;
   /* TEXT */
   --main-color: white;
-  --soft-color: #ddd;
-  --dark-color: #2a3447;
+  --soft-color: #b1b2c4;
+  --dark-color: #030C40;
 }

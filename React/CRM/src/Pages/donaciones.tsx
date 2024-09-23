@@ -5,6 +5,7 @@ import {
     InputProps,
     TextField,
     TextInput,
+    SelectInput,
     EmailField,
     ReferenceField,
     ReferenceInput,
@@ -25,10 +26,9 @@ import {
     
     <List>
         <Datagrid>
-        <TextField source="id" />
         <TextField source="cliente" />
-        <TextField source="formaDePago" />
         <TextField source="cantidad" /> 
+        <TextField source="formaDePago" />
         <DateField source="fecha" /> 
         <EditButton />
         </Datagrid>
@@ -39,9 +39,17 @@ import {
     <Edit>
       <SimpleForm>
         <TextInput source="id" InputProps={{ disabled: true }} />
-        <TextInput source="cliente" />
-        <TextInput source="formaDePago" />
-        <TextInput source="cantidad" /> 
+        <TextInput source="cliente" validate={required()}/>
+        <TextInput source="cantidad" validate={required()}/> 
+        <SelectInput 
+          source="formaDePago" 
+          choices={[
+            { id: 'tarjeta', name: 'Tarjeta' },
+            { id: 'efectivo', name: 'Efectivo' },
+            { id: 'transferencia', name: 'Transferencia' }
+          ]}
+          validate={required()}
+        />
         <DateInput source="fecha" /> 
       </SimpleForm>
     </Edit>
@@ -51,9 +59,17 @@ import {
     <Create>
       <SimpleForm>
         <TextInput source="id" InputProps={{ disabled: true }} />
-        <TextInput source="cliente" />
-        <TextInput source="formaDePago" />
-        <TextInput source="cantidad" /> 
+        <TextInput source="cliente" validate={required()}/>
+        <TextInput source="cantidad" validate={required()}/> 
+        <SelectInput 
+          source="formaDePago" 
+          choices={[
+            { id: 'tarjeta', name: 'Tarjeta' },
+            { id: 'efectivo', name: 'Efectivo' },
+            { id: 'transferencia', name: 'Transferencia' }
+          ]}
+          validate={required()}
+        />
         <DateInput source="fecha" /> 
       </SimpleForm>
     </Create>
