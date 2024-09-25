@@ -6,7 +6,7 @@ export const menuAdmin = [
       {
         id: 1,
         title: "Dashboard",
-        url: "/dashboard",
+        url: "/",
         icon: "home.png",
       },
       {
