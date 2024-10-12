@@ -9,7 +9,8 @@ a {
   color: inherit;
 }
 
-html, body {
+html,
+body {
   height: 100%;
 }
 
@@ -43,7 +44,7 @@ html, body {
   justify-content: space-between;
 }
 
-.menu{
+.menu {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -53,6 +54,13 @@ html, body {
 .contentContainer {
   padding: 20px;
   width: 80%;
+  flex: 1;
+  background-color: var(--main-bg);
+}
+
+.fullContentContainer {
+  padding: 20px;
+  width: 100%;
   flex: 1;
   background-color: var(--main-bg);
 }

@@ -5,10 +5,8 @@ import https from "https";
 import fs from "fs";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
-
-
 
 // Inicializar app Express
 const app = express();
@@ -48,7 +46,7 @@ const gastoSchema = new mongoose.Schema({
   descripcion: String,
   cantidad: Number,
   fecha: { type: Date, default: Date.now },
-  categoria: String
+  categoria: String,
 });
 
 const Usuario = mongoose.model("Usuario", usuarioSchema, "usuarios");
@@ -84,7 +82,11 @@ app.post("/gastos", async (req, res) => {
 // PUT para actualizar un gasto
 app.put("/gastos/:id", async (req, res) => {
   try {
-    const updatedGasto = await Gasto.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const updatedGasto = await Gasto.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
     if (!updatedGasto) return res.status(404).send("Gasto not found");
     res.json(updatedGasto);
   } catch (err) {
@@ -139,16 +141,25 @@ app.post("/usuarios", async (req, res) => {
 // POST usuario
 app.post("/usuarios", async (req, res) => {
   try {
-    const { nombre, apellido, edad, telefono, email, rol, usuario, password } = req.body;
+    const { nombre, apellido, edad, telefono, email, rol, usuario, password } =
+      req.body;
     const hashedPassword = await bcrypt.hash(password, 10); // Hash the password
-    const newUsuario = new Usuario({ nombre, apellido, edad, telefono, email, rol, usuario, password: hashedPassword }); // Create a new Usuario instance with the hashed password
+    const newUsuario = new Usuario({
+      nombre,
+      apellido,
+      edad,
+      telefono,
+      email,
+      rol,
+      usuario,
+      password: hashedPassword,
+    }); // Create a new Usuario instance with the hashed password
     await newUsuario.save(); // Save the new user
     res.status(201).json(newUsuario); // Return the new user in the response
   } catch (err) {
     res.status(500).send(err.message);
   }
 });
-
 
 // PUT para actualizar un usuario
 app.put("/usuarios/:id", async (req, res) => {
@@ -186,7 +197,6 @@ app.delete("/usuarios", async (req, res) => {
     res.status(500).send(err.message);
   }
 });
-
 
 // GET donaciones
 app.get("/donaciones", async (req, res) => {
@@ -264,9 +274,9 @@ app.get("/dashboard/total-donaciones", async (req, res) => {
       {
         $group: {
           _id: null,
-          total: { $sum: "$cantidad" }
-        }
-      }
+          total: { $sum: "$cantidad" },
+        },
+      },
     ]);
     res.json({ total: totalDonaciones[0]?.total || 0 });
   } catch (err) {
@@ -281,9 +291,9 @@ app.get("/dashboard/total-gastos", async (req, res) => {
       {
         $group: {
           _id: null,
-          total: { $sum: "$cantidad" }
-        }
-      }
+          total: { $sum: "$cantidad" },
+        },
+      },
     ]);
     res.json({ total: totalGastos[0]?.total || 0 });
   } catch (err) {
@@ -298,9 +308,9 @@ app.get("/dashboard/promedio-donaciones", async (req, res) => {
       {
         $group: {
           _id: null,
-          promedio: { $avg: "$cantidad" }
-        }
-      }
+          promedio: { $avg: "$cantidad" },
+        },
+      },
     ]);
     res.json({ promedio: promedioDonaciones[0]?.promedio || 0 });
   } catch (err) {
@@ -308,7 +318,7 @@ app.get("/dashboard/promedio-donaciones", async (req, res) => {
   }
 });
 
-//Cant de donaciones 
+//Cant de donaciones
 app.get("/dashboard/cantidad-donaciones", async (req, res) => {
   try {
     const cantidadDonaciones = await Donacion.countDocuments();
@@ -325,9 +335,9 @@ app.get("/dashboard/tipo-pago", async (req, res) => {
       {
         $group: {
           _id: "$formaDePago",
-          total: { $sum: 1 }
-        }
-      }
+          total: { $sum: 1 },
+        },
+      },
     ]);
     res.json(tipoPago);
   } catch (err) {
@@ -342,10 +352,10 @@ app.get("/dashboard/donaciones-por-mes", async (req, res) => {
       {
         $group: {
           _id: { $month: { $toDate: "$fecha" } },
-          totalDonaciones: { $sum: "$cantidad" }
-        }
+          totalDonaciones: { $sum: "$cantidad" },
+        },
       },
-      { $sort: { "_id": 1 } }
+      { $sort: { _id: 1 } },
     ]);
     res.json(donacionesPorMes);
   } catch (err) {
@@ -360,10 +370,10 @@ app.get("/dashboard/gastos-por-mes", async (req, res) => {
       {
         $group: {
           _id: { $month: { $toDate: "$fecha" } },
-          totalGastos: { $sum: "$cantidad" }
-        }
+          totalGastos: { $sum: "$cantidad" },
+        },
       },
-      { $sort: { "_id": 1 } }
+      { $sort: { _id: 1 } },
     ]);
     res.json(gastosPorMes);
   } catch (err) {
@@ -375,7 +385,7 @@ app.get("/dashboard/gastos-por-mes", async (req, res) => {
 app.get("/dashboard/progreso-proyecto", async (req, res) => {
   try {
     const totalDonaciones = await Donacion.aggregate([
-      { $group: { _id: null, total: { $sum: "$cantidad" } } }
+      { $group: { _id: null, total: { $sum: "$cantidad" } } },
     ]);
     const meta = 300000; // Meta fija
     const recaudado = totalDonaciones[0]?.total || 0;
@@ -387,7 +397,16 @@ app.get("/dashboard/progreso-proyecto", async (req, res) => {
   }
 });
 
-
+// GET usuario por nombre de usuario
+app.get("/usuarios/username/:username", async (req, res) => {
+  try {
+    const usuario = await Usuario.findOne({ usuario: req.params.username });
+    if (!usuario) return res.status(404).send("Usuario not found");
+    res.json(usuario);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
 
 /*
 // Endpoint de auth
@@ -429,7 +448,9 @@ app.post("/auth", async (req, res) => {
 
     if (!user) {
       console.log("User not found");
-      return res.status(401).json({ success: false, message: "Invalid credentials" });
+      return res
+        .status(401)
+        .json({ success: false, message: "Invalid credentials" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
@@ -437,10 +458,16 @@ app.post("/auth", async (req, res) => {
 
     if (!isMatch) {
       console.log("Incorrect password");
-      return res.status(401).json({ success: false, message: "Invalid credentials" });
+      return res
+        .status(401)
+        .json({ success: false, message: "Invalid credentials" });
     }
 
-    const token = jwt.sign({ userId: user._id, role: user.rol }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign(
+      { userId: user._id, role: user.rol },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
     console.log("Token generated:", token);
 
     res.json({ success: true, token, rol: user.rol });
@@ -450,16 +477,16 @@ app.post("/auth", async (req, res) => {
   }
 });
 
-
-
-const privateKey = fs.readFileSync('../HTTPS/server.key', 'utf8');
-const certificate = fs.readFileSync('../HTTPS/server.crt', 'utf8');
-const ca = fs.readFileSync('../HTTPS/ca.crt', 'utf8');
+const privateKey = fs.readFileSync("../HTTPS/server.key", "utf8");
+const certificate = fs.readFileSync("../HTTPS/server.crt", "utf8");
+const ca = fs.readFileSync("../HTTPS/ca.crt", "utf8");
 const credentials = { key: privateKey, cert: certificate, ca: ca };
 
 //Servidor HTTPS
 const httpsServer = https.createServer(credentials, app);
-httpsServer.listen(port, () => console.log(`Server running on port ${port} with HTTPS`));
+httpsServer.listen(port, () =>
+  console.log(`Server running on port ${port} with HTTPS`)
+);
 
 // Inicialización del servidor
 //app.listen(port, () => {
