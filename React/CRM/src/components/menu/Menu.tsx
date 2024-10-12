@@ -11,7 +11,7 @@ const handleLogout = () => {
   // Lógica para cerrar sesión
   localStorage.removeItem("username");
   localStorage.removeItem("rol");
-  window.location.reload(); // Recarga la página para aplicar el log out
+  window.location.href = "/login"; // Redirigir a la página de login para limpiar el estado
 };
 
 const CustomMenu = (props: MenuProps) => {
@@ -43,7 +43,6 @@ const CustomMenu = (props: MenuProps) => {
           </div>
         </div>
       )}
-
 
       {permissions === "Donador" && (
         <div className="menu">

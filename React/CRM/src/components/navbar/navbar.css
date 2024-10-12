@@ -69,7 +69,7 @@
   padding: 10px;
   border-radius: 5px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  z-index: 1000; /* Asegura que esté sobre otros elementos */
+  z-index: 1000;
 }
 
 .settings-menu button {
@@ -81,8 +81,8 @@
   padding: 5px 10px;
 }
 
-.titulo{
-  font-size:large;
+.titulo {
+  font-size: large;
 }
 
 .settings-menu button:hover {

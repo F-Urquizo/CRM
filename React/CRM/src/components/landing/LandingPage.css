@@ -1,0 +1,194 @@
+.landing-page {
+  font-family: Arial, sans-serif;
+  color: #333;
+  background-color: #f4f4f4;
+}
+
+.thanks-section {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2rem;
+  color: white;
+}
+
+.overlay {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.logo {
+  width: 50px;
+  margin-right: 10px;
+}
+
+.nombre-fundacion {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.thanks-text {
+  max-width: 30%;
+}
+
+.overlay-settings {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.settings-icon {
+  width: 30px;
+  cursor: pointer;
+}
+
+.settings-menu {
+  position: absolute;
+  top: 40px;
+  right: 20px;
+  background-color: white;
+  color: #333;
+  padding: 1rem;
+  border-radius: 5px;
+}
+
+.logout-button {
+  padding: 0.5rem 1rem;
+  background-color: #002f5f;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.project-info-section {
+  display: flex;
+  justify-content: space-between;
+  padding: 2rem;
+  background-color: white;
+}
+
+.project-text {
+  max-width: 50%;
+}
+
+.progress-placeholder {
+  background-color: #e0e0e0;
+  padding: 1rem;
+  border-radius: 5px;
+  max-width: 40%;
+}
+
+.graph-placeholder {
+  border: 2px dashed #002f5f;
+  padding: 2rem;
+  font-size: 1.2rem;
+  color: #002f5f;
+  text-align: center;
+}
+
+.awareness-section {
+  padding: 2rem;
+  background-color: #f9f9f9;
+  text-align: center;
+}
+
+.image-grid {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 2rem;
+}
+
+.awareness-image {
+  width: 30%;
+  border-radius: 10px;
+}
+
+.awareness-info {
+  display: flex;
+  justify-content: space-between;
+  margin: 2rem 0;
+}
+
+.awareness-text {
+  max-width: 40%;
+}
+
+.donate-button {
+  padding: 1rem 2.5rem;
+  background-color: #002f5f;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.donate-button:hover {
+  background-color: #001a3d;
+}
+
+.social-share {
+  margin-top: 2rem;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.social-icon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.footer {
+  background-color: #002f5f;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+}
+
+.contact-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+  padding: 0 2rem;
+  width: 100%;
+}
+
+.contact-left,
+.contact-center,
+.contact-right {
+  flex-basis: 33%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.contact-info p {
+  margin: 0.3rem 0;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+}
