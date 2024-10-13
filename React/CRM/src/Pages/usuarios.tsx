@@ -18,17 +18,20 @@ import {
   ImageInput,
 } from "react-admin";
 
+import './lists.css'; 
+
 export const UsuariosList = () => (
   <List>
-    <Datagrid>
-      <TextField source="nombre" />
-      <TextField source="apellido" />
-      <TextField source="edad" />
-      <TextField source="telefono" />
-      <EmailField source="email" />
-      {/*<TextField source="rol" />*/}
-      <EditButton />
-    </Datagrid>
+    <div className="custom-list"> 
+      <h2 className="custom-title">Usuarios</h2> 
+      <Datagrid className="custom-datagrid"> 
+        <TextField source="nombre" />
+        <TextField source="edad" />
+        <TextField source="telefono" />
+        <EmailField source="email" />
+        <EditButton />
+      </Datagrid>
+    </div>
   </List>
 );
 
@@ -37,7 +40,7 @@ export const UsuariosEdit = () => (
     <SimpleForm>
       <TextInput source="id" InputProps={{ disabled: true }} />
       <TextInput source="nombre" validate={required()}/>
-      <TextInput source="apellido" validate={required()}/>
+      {/*<TextInput source="apellido" validate={required()}/>*/}
       <TextInput source="edad" />
       <TextInput source="telefono" />
       <TextInput source="email" validate={required()}/>
@@ -53,7 +56,7 @@ export const UsuariosCreate = () => (
     <SimpleForm>
       <TextInput source="id" InputProps={{ disabled: true }} />
       <TextInput source="nombre" validate={required()}/>
-      <TextInput source="apellido" validate={required()}/>
+      {/*<TextInput source="apellido" validate={required()}/>*/}
       <TextInput source="edad" />
       <TextInput source="telefono" />
       <TextInput source="email" validate={required()}/>
