@@ -22,6 +22,7 @@ import {
 } from "./Pages/donaciones";
 import "./styles/global.css";
 import "./styles/variables.css";
+import LoginPage from "./Pages/login/LoginPage";
 
 export const App = () => (
   <Admin
@@ -29,6 +30,8 @@ export const App = () => (
     authProvider={authProvider}
     dataProvider={dataProvider}
     dashboard={Dashboard}
+    loginPage={LoginPage}
+
   >
     <Resource
       name="usuarios"
