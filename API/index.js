@@ -36,13 +36,30 @@ const usuarioSchema = new mongoose.Schema({
   usuario: String,
   password: String,
 });
+/*
+const donacionSchema = new mongoose.Schema({
+  nombre: String,
+  formaDePago: String,
+  cantidad: Number,
+  fecha: { type: Date, default: Date.now },
+});*/
 
 const donacionSchema = new mongoose.Schema({
-  cliente: String,
+  usuarioId: { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario' }, // Reference to the Usuario model
   formaDePago: String,
   cantidad: Number,
   fecha: { type: Date, default: Date.now },
 });
+
+
+/*
+const donacionSchema = new mongoose.Schema({
+  usuarioId: { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario' }, // Reference to the Usuarios collection
+  formaDePago: String,
+  cantidad: Number,
+  fecha: { type: Date, default: Date.now },
+});
+*/
 
 const gastoSchema = new mongoose.Schema({
   descripcion: String,
@@ -198,6 +215,7 @@ app.get("/donaciones", async (req, res) => {
   }
 });
 
+/*
 // GET donación
 app.get("/donaciones/:id", async (req, res) => {
   try {
@@ -208,7 +226,19 @@ app.get("/donaciones/:id", async (req, res) => {
     res.status(500).send(err.message);
   }
 });
+*/
+app.get("/donaciones/:id", async (req, res) => {
+  try {
+    const donacion = await Donacion.findById(req.params.id).populate('usuarioId', 'nombre');
+    if (!donacion) return res.status(404).send("Donacion not found");
+    res.json(donacion);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
 
+
+/*
 // POST donación
 app.post("/donaciones", async (req, res) => {
   try {
@@ -219,8 +249,96 @@ app.post("/donaciones", async (req, res) => {
     res.status(400).send(err.message);
   }
 });
+*/
+app.post("/donaciones", async (req, res) => {
+  try {
+    const { usuarioId, formaDePago, cantidad } = req.body; // usuarioId is passed here
+    const newDonacion = new Donacion({ usuarioId, formaDePago, cantidad });
+    await newDonacion.save();
+    res.status(201).json(newDonacion);
+  } catch (err) {
+    res.status(400).send(err.message);
+  }
+});
 
+/*
 // PUT para actuallizar una donacion
+app.put("/donaciones/:id", async (req, res) => {
+  try {
+    const updatedDonacion = await Donacion.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+    if (!updatedDonacion) return res.status(404).send("Donacion not found");
+    res.json(updatedDonacion);
+  } catch (err) {
+    res.status(400).send(err.message);
+  }
+});
+*/
+app.put("/donaciones/:id", async (req, res) => {
+  try {
+    const updatedDonacion = await Donacion.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    ).populate('usuarioId', 'nombre');
+    if (!updatedDonacion) return res.status(404).send("Donacion not found");
+    res.json(updatedDonacion);
+  } catch (err) {
+    res.status(400).send(err.message);
+  }
+});
+
+
+// DELETE donacion
+app.delete("/donaciones/:id", async (req, res) => {
+  try {
+    const deletedDonacion = await Donacion.findByIdAndDelete(req.params.id);
+    if (!deletedDonacion) return res.status(404).send("Donacion not found");
+    res.status(204).send();
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
+
+
+/*
+// GET donaciones with populated usuarioId
+app.get("/donaciones", async (req, res) => {
+  try {
+    const donaciones = await Donacion.find().populate('usuarioId', 'nombre'); // Populate the usuarioId field
+    res.json(donaciones);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
+
+// GET donación by id with populated usuarioId
+app.get("/donaciones/:id", async (req, res) => {
+  try {
+    const donacion = await Donacion.findById(req.params.id).populate('usuarioId', 'nombre'); // Populate the usuarioId field
+    if (!donacion) return res.status(404).send("Donacion not found");
+    res.json(donacion);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
+
+// POST donación with usuarioId
+app.post("/donaciones", async (req, res) => {
+  try {
+    const { usuarioId, formaDePago, cantidad } = req.body; // Expect usuarioId to be passed in the request
+    const newDonacion = new Donacion({ usuarioId, formaDePago, cantidad }); // Create a new Donacion with the usuarioId
+    await newDonacion.save();
+    res.status(201).json(newDonacion);
+  } catch (err) {
+    res.status(400).send(err.message);
+  }
+});
+
+// PUT para actualizar una donacion
 app.put("/donaciones/:id", async (req, res) => {
   try {
     const updatedDonacion = await Donacion.findByIdAndUpdate(
@@ -246,6 +364,7 @@ app.delete("/donaciones/:id", async (req, res) => {
   }
 });
 
+*/
 // Endpoints Gráficas
 // Top 5 donaciones
 app.get("/dashboard/top-donaciones", async (req, res) => {

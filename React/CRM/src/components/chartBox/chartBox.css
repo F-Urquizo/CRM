@@ -17,11 +17,11 @@
     font-size: 14px;
 }
 
-.title img{
-  width: 15px;
-  height: 15px;
-  object-fit: contain;
-  filter: invert(1);
+.title img {
+    width: 15px;
+    height: 15px;
+    object-fit: contain;
+    filter: invert(1);
 }
 
 .chartInfo {
@@ -36,7 +36,7 @@
     width: 100%;
 }
 
-.texts{
+.texts {
     display: flex;
     flex-direction: column;
     text-align: right;
@@ -53,5 +53,18 @@
 
 .chartBox a {
     display: block;
-    margin-top: 10px; /* Añadir un espacio entre "View all" y otros elementos */
+    margin-top: 10px; /* Add space between "View all" and other elements */
+}
+
+/* Custom Tooltip Styles */
+.custom-tooltip {
+    background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+    border-radius: 5px; /* Rounded corners for the tooltip */
+    padding: 10px; /* Add some padding */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Slight shadow for depth */
+}
+
+.custom-tooltip p {
+    margin: 0; /* Remove default margin */
+    color: black; /* Set text color to black */
 }

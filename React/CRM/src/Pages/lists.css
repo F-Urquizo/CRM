@@ -1,0 +1,77 @@
+.custom-list {
+  background-color: var(--main-bg);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.custom-list:hover {
+  transform: translateY(-2px);
+}
+
+.custom-title {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  color: var(--main-color);
+  font-weight: 600;
+  text-align: center;
+}
+
+.custom-datagrid {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.custom-datagrid th,
+.custom-datagrid td {
+  padding: 15px;
+  text-align: center;
+  border-bottom: 1px solid var(--soft-bg);
+  transition: background-color 0.2s;
+  font-size: 1.2rem;
+}
+
+.custom-datagrid th {
+  background-color: var(--dark-bg);
+  color: var(--main-color);
+  font-weight: bold;
+}
+
+.custom-datagrid tr:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.edit-button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.edit-button:hover {
+  background-color: var(--primary-color-dark);
+}
+
+@media (max-width: 768px) {
+  .custom-list {
+    padding: 15px;
+  }
+
+  .custom-title {
+    font-size: 1.5rem;
+  }
+
+  .custom-datagrid th,
+  .custom-datagrid td {
+    padding: 10px;
+  }
+
+  .edit-button {
+    padding: 6px 10px;
+  }
+}

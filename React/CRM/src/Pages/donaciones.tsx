@@ -1,3 +1,4 @@
+
 import {
     List,
     Datagrid,
@@ -22,16 +23,23 @@ import {
     
   } from "react-admin";
 
+  import './lists.css'; 
+
   export const DonacionesList = () => (
     
     <List>
-        <Datagrid>
-        <TextField source="cliente" />
+      <div className="custom-list">
+      <h2 className="custom-title">Donaciones</h2>
+        <Datagrid className="custom-datagrid">
+        <ReferenceField label="Usuario" source="usuarioId" reference="usuarios">
+                <TextField source="nombre" />
+          </ReferenceField>        
         <TextField source="cantidad" /> 
         <TextField source="formaDePago" />
         <DateField source="fecha" /> 
         <EditButton />
         </Datagrid>
+      </div>
     </List>
   );
 
@@ -39,14 +47,15 @@ import {
     <Edit>
       <SimpleForm>
         <TextInput source="id" InputProps={{ disabled: true }} />
-        <TextInput source="cliente" validate={required()}/>
+        <ReferenceInput label="Usuario" source="usuarioId" reference="usuarios">
+                <SelectInput optionText="nombre" />
+          </ReferenceInput>
         <TextInput source="cantidad" validate={required()}/> 
         <SelectInput 
           source="formaDePago" 
           choices={[
-            { id: 'tarjeta', name: 'Tarjeta' },
-            { id: 'efectivo', name: 'Efectivo' },
-            { id: 'transferencia', name: 'Transferencia' }
+            { id: 'Crédito', name: 'Crédito' },
+            { id: 'Efectivo', name: 'Efectivo' },
           ]}
           validate={required()}
         />
@@ -59,14 +68,15 @@ import {
     <Create>
       <SimpleForm>
         <TextInput source="id" InputProps={{ disabled: true }} />
-        <TextInput source="cliente" validate={required()}/>
+        <ReferenceInput label="Usuario" source="usuarioId" reference="usuarios">
+                <SelectInput optionText="nombre" />
+        </ReferenceInput>
         <TextInput source="cantidad" validate={required()}/> 
         <SelectInput 
           source="formaDePago" 
           choices={[
-            { id: 'tarjeta', name: 'Tarjeta' },
-            { id: 'efectivo', name: 'Efectivo' },
-            { id: 'transferencia', name: 'Transferencia' }
+            { id: 'Crédito', name: 'Crédito' },
+            { id: 'Efectivo', name: 'Efectivo' },
           ]}
           validate={required()}
         />
@@ -74,3 +84,4 @@ import {
       </SimpleForm>
     </Create>
   );
+  
