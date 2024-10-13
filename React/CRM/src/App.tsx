@@ -9,12 +9,12 @@ import { Layout } from "./Layout";
 import dataProvider from "./dataProvider";
 import { authProvider } from "./AuthProvider";
 import Dashboard from "./Pages/dashboard/dashboard";
+
 import {
-  DashboardList,
-  DashboardEdit,
-  DashboardCreate,
-} from "./Pages/dashboard/dashboard";
-import { UsuariosList, UsuariosEdit, UsuariosCreate } from "./Pages/usuarios";
+  UsuariosList,
+  UsuariosEdit,
+  UsuariosCreate,
+} from "./Pages/usuarios";
 import {
   DonacionesList,
   DonacionesEdit,
@@ -30,12 +30,6 @@ export const App = () => (
     dataProvider={dataProvider}
     dashboard={Dashboard}
   >
-    <Resource
-      name="dashboard"
-      list={DashboardList}
-      edit={DashboardEdit}
-      create={DashboardCreate}
-    ></Resource>
     <Resource
       name="usuarios"
       list={UsuariosList}
