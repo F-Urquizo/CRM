@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import dataProvider from "../../dataProvider";
 import "./LandingPage.css";
+import DonationModal from "./DonationModal";
 
 const LandingPage: React.FC = () => {
   const [userName, setUserName] = useState("");
@@ -8,6 +9,10 @@ const LandingPage: React.FC = () => {
   const [hasDonated, setHasDonated] = useState(false);
   const [error, setError] = useState("");
   const [showSettingsMenu, setShowSettingsMenu] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [donationAmount, setDonationAmount] = useState<number | null>(null);
+  const [donationDate, setDonationDate] = useState<string | null>(null);
 
   // Efecto para obtener el nombre del usuario y verificar si ha hecho donaciones
   useEffect(() => {
@@ -59,6 +64,39 @@ const LandingPage: React.FC = () => {
   // Función para alternar el menú de configuración
   const toggleSettingsMenu = () => {
     setShowSettingsMenu(!showSettingsMenu);
+  };
+
+  const handleDonate = () => {
+    setShowModal(true);
+  };
+
+  const handleConfirmDonation = (amount: number, date: string) => {
+    console.log("Donación confirmada: ", { amount, date });
+    setDonationAmount(amount);
+    setDonationDate(date);
+    setShowConfirmationModal(true);
+  };
+
+  const handleAPIDonation = async (amount: number, date: string) => {
+    try {
+      const donationData = {
+        usuarioId: userId,
+        formaDePago: "Crédito",
+        cantidad: amount,
+        fecha: date,
+      };
+
+      // Realizar el POST a la base de datos
+      const response = await dataProvider.create("donaciones", {
+        data: donationData,
+      });
+
+      console.log("Donación guardada exitosamente:", response.data);
+      setHasDonated(true);
+    } catch (error) {
+      console.log("Error al guardar la donación:", error);
+      setError("Error al realizar la donación, por favor inténtelo de nuevo.");
+    }
   };
 
   return (
@@ -194,7 +232,46 @@ const LandingPage: React.FC = () => {
         </div>
 
         {/* Botón de donación */}
-        <button className="donate-button">Realiza una donación</button>
+        <button className="donate-button" onClick={handleDonate}>
+          Realiza una donación
+        </button>
+
+        {/* Modal para realizar donación */}
+        {showModal && (
+          <DonationModal
+            onClose={() => setShowModal(false)}
+            onConfirm={handleConfirmDonation}
+          />
+        )}
+
+        {showConfirmationModal && (
+          <div className="confirmation-modal-overlay">
+            <div className="confirmation-modal-content">
+              <h3>¿Desea proceder con la donación?</h3>
+              <div className="confirmation-modal-buttons">
+                <button
+                  onClick={() => setShowConfirmationModal(false)}
+                  className="cancel-button"
+                >
+                  Atrás
+                </button>
+                <button
+                  onClick={() => {
+                    setShowConfirmationModal(false);
+                    console.log("Donación confirmada.");
+                    // Guardar la donación en la base de datos llamando a la función
+                    if (donationAmount && donationDate) {
+                      handleAPIDonation(donationAmount, donationDate);
+                    }
+                  }}
+                  className="confirm-button"
+                >
+                  Confirmar
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Compartir en redes sociales */}
         <div className="social-share">
