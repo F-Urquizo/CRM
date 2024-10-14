@@ -4,27 +4,49 @@ import "./LandingPage.css";
 
 const LandingPage: React.FC = () => {
   const [userName, setUserName] = useState("");
+  const [userId, setUserId] = useState("");
+  const [hasDonated, setHasDonated] = useState(false);
   const [error, setError] = useState("");
   const [showSettingsMenu, setShowSettingsMenu] = useState(false);
 
-  // Efecto para obtener el nombre del usuario
+  // Efecto para obtener el nombre del usuario y verificar si ha hecho donaciones
   useEffect(() => {
-    const fetchUserName = async () => {
+    const fetchUserData = async () => {
       const username = localStorage.getItem("username");
       if (username) {
         try {
-          const response = await dataProvider.getOne("usuarios/username", {
+          // Obtener el usuario por su nombre de usuario
+          const userResponse = await dataProvider.getOne("usuarios/username", {
             id: username,
           });
-          setUserName(response.data?.nombre || username);
+
+          const userId = userResponse.data?._id;
+          setUserName(userResponse.data?.nombre || username);
+          setUserId(userId);
+
+          // Buscar donaciones filtrando por el userId
+          const donationsResponse = await dataProvider.getList("donaciones", {
+            // Filtrar donaciones por usuarioId
+            filter: { usuarioId: userId },
+            pagination: { page: 1, perPage: 1 },
+          });
+
+          // Verificar si hay donaciones para este usuario
+          if (donationsResponse.data.length > 0) {
+            // Si hay donaciones, el usuario ha donado
+            setHasDonated(true);
+          } else {
+            // Si no hay donaciones, no ha donado
+            setHasDonated(false);
+          }
         } catch (err) {
-          console.error("Error fetching user data:", err);
-          setError("Error al cargar la información del usuario");
+          console.error("Error fetching user or donation data:", err);
+          setError("Error al cargar la información del usuario o donaciones");
         }
       }
     };
 
-    fetchUserName();
+    fetchUserData();
   }, []);
 
   // Función para cerrar sesión
@@ -41,7 +63,7 @@ const LandingPage: React.FC = () => {
 
   return (
     <div className="landing-page">
-      {/* Sección de Agradecimiento con imagen de fondo */}
+      {/* Sección de Agradecimiento o Invitación con imagen de fondo */}
       <section
         className="thanks-section"
         style={{ backgroundImage: `url('/cisternaFondo.png')` }}
@@ -57,23 +79,42 @@ const LandingPage: React.FC = () => {
             <span className="nombre-fundacion">Fundación Sanders</span>
           </div>
 
-          {/* Texto de agradecimiento */}
+          {/* Texto condicional dependiendo de si el usuario ha donado o no */}
           <div className="thanks-text">
-            <h1>Gracias por tu donación, {userName ? userName : "donador"}!</h1>
-            {error ? (
-              <p>{error}</p>
+            {hasDonated ? (
+              <>
+                <h1>
+                  Gracias por tu donación, {userName ? userName : "donador"}!
+                </h1>
+                <p>
+                  Gracias a tu generosa donación, estamos un paso más cerca de
+                  mejorar la vida de muchas personas que carecen de acceso a
+                  agua potable. Tu apoyo no solo proporciona un recurso vital
+                  como el agua, sino que también trae esperanza y un futuro más
+                  brillante para familias y comunidades que dependen de tu
+                  ayuda. Cada gota cuenta, y con tu colaboración, estamos
+                  construyendo un mundo más justo y solidario, donde el agua
+                  limpia ya no es un lujo, sino un derecho para todos. Gracias
+                  por creer en nuestra causa y por formar parte de este cambio.
+                </p>
+              </>
             ) : (
-              <p>
-                Gracias a tu generosa donación, estamos un paso más cerca de
-                mejorar la vida de muchas personas que carecen de acceso a agua
-                potable. Tu apoyo no solo proporciona un recurso vital como el
-                agua, sino que también trae esperanza y un futuro más brillante
-                para familias y comunidades que dependen de tu ayuda. Cada gota
-                cuenta, y con tu colaboración, estamos construyendo un mundo más
-                justo y solidario, donde el agua limpia ya no es un lujo, sino
-                un derecho para todos. Gracias por creer en nuestra causa y por
-                formar parte de este cambio.
-              </p>
+              <>
+                <h1>
+                  ¡Únete a nuestra causa {userName}, transforma vidas con tu
+                  donación!
+                </h1>
+                <p>
+                  Tu ayuda puede marcar la diferencia en la vida de muchas
+                  personas que no tienen acceso a agua potable. Con tu apoyo, no
+                  solo podemos proporcionar este recurso esencial, sino también
+                  llevar esperanza y crear un futuro más prometedor para
+                  familias y comunidades enteras. Cada donación, por pequeña que
+                  sea, nos acerca a un mundo más justo, donde el agua limpia no
+                  es un privilegio, sino un derecho universal. ¡Sé parte de este
+                  cambio y ayuda a construir un mañana mejor!
+                </p>
+              </>
             )}
           </div>
 
