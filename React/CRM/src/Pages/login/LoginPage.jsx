@@ -11,6 +11,8 @@ const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const [edad, setEdad] = useState(''); // Estado para la edad
+  const [telefono, setTelefono] = useState(''); // Estado para el teléfono
   const [loading, setLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [error, setError] = useState('');
@@ -25,10 +27,12 @@ const LoginPage = () => {
       if (isSignUp) {
         // Si es sign-up, realiza la solicitud para crear una cuenta
         const response = await axios.post("https://localhost:3000/usuarios", {
-          nombre: username, // Aquí puedes ajustar qué datos mandar, por simplicidad solo el username
+          nombre: username,
           usuario: username,
           password,
           email,
+          edad: parseInt(edad, 10),
+          telefono,
           rol: "Donador", // Siempre asigna el rol "Donador"
         });
 
@@ -112,13 +116,29 @@ const LoginPage = () => {
                   onChange={(e) => setUsername(e.target.value)} 
                 />
                 {isSignUp && (
-                  <TextField 
-                    label="Email" 
-                    type="email" 
-                    fullWidth 
-                    value={email} 
-                    onChange={(e) => setEmail(e.target.value)} 
-                  />
+                  <>
+                    <TextField 
+                      label="Email" 
+                      type="email" 
+                      fullWidth 
+                      value={email} 
+                      onChange={(e) => setEmail(e.target.value)} 
+                    />
+                    <TextField 
+                      label="Edad" 
+                      type="number" 
+                      fullWidth 
+                      value={edad} 
+                      onChange={(e) => setEdad(e.target.value)} 
+                    />
+                    <TextField 
+                      label="Teléfono" 
+                      type="tel" 
+                      fullWidth 
+                      value={telefono} 
+                      onChange={(e) => setTelefono(e.target.value)} 
+                    />
+                  </>
                 )}
                 <TextField 
                   label="Contraseña" 
