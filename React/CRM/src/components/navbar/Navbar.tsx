@@ -12,8 +12,11 @@ export const Navbar = () => {
     // Lógica para cerrar sesión
     localStorage.removeItem("username");
     localStorage.removeItem("rol");
+    localStorage.removeItem("name");
     window.location.reload(); // Recarga la página para aplicar el log out
   };
+
+  const name = localStorage.getItem("name");
 
   return (
     <div className="navbar">
@@ -22,30 +25,38 @@ export const Navbar = () => {
         <span className="titulo">Fundación Sanders</span> 
       </div>
       <div className="icons">
+        {/*
         <img src="/search.svg" alt="Search" className="icon" />
         <img src="/app.svg" alt="App" className="icon" />
         <img src="/expand.svg" alt="Expand" className="icon" />
+        
         <div className="notification">
           <img src="/notifications.svg" alt="Notifications" />
           <span>1</span>
         </div>
+        
         <div className="user">
           <img src="/mbappe.png" alt="User" />
           <span>Mbappe</span>
         </div>
+        */}
+        <div style={{ fontSize: "18px" }}>
+          {name}
+        </div>
         {/* Icono de configuraciones con evento de click */}
+        {/*
         <img
           src="/settings.svg"
           alt="Settings"
           className="icon"
           onClick={toggleSettingsMenu}
         />
-        {/* Menú de configuración desplegable */}
         {showSettingsMenu && (
           <div className="settings-menu">
             <button onClick={handleLogout}>Log Out</button>
           </div>
         )}
+        */}
       </div>
     </div>
   );

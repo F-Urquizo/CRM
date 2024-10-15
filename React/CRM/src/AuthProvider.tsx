@@ -15,6 +15,7 @@ export const authProvider: AuthProvider = {
             if (response.data.success) {
                 localStorage.setItem("username", username);
                 localStorage.setItem("rol", response.data.rol); // Almacena el rol del usuario
+                localStorage.setItem("name", response.data.nombre);
                 return Promise.resolve();
             } else {
                 return Promise.reject("Invalid credentials");
@@ -29,6 +30,7 @@ export const authProvider: AuthProvider = {
     logout: () => {
         localStorage.removeItem("username");
         localStorage.removeItem("rol"); // Elimina el rol del usuario
+        localStorage.removeItem("name");
         return Promise.resolve();
     },
 
@@ -37,6 +39,7 @@ export const authProvider: AuthProvider = {
         if (status === 401 || status === 403) {
             localStorage.removeItem("username");
             localStorage.removeItem("rol"); // Elimina el rol si hay un error de autenticación
+            localStorage.removeItem("name");
             return Promise.reject();
         }
         return Promise.resolve();

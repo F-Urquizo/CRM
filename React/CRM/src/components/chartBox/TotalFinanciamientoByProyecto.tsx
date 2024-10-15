@@ -31,6 +31,7 @@ const TotalFinanciamientoByProyecto = () => {
                         interval={0} 
                     />
                     <YAxis 
+                        // @ts-ignore
                         angle={-20}
                     />
                     <Tooltip />
