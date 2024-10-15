@@ -699,7 +699,7 @@ app.post("/auth", async (req, res) => {
     );
     console.log("Token generated:", token);
 
-    res.json({ success: true, token, rol: user.rol });
+    res.json({ success: true, token, rol: user.rol, nombre: user.nombre });
   } catch (err) {
     console.error("Authentication error:", err);
     res.status(500).json({ error: "Server Error" });

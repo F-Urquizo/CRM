@@ -1,25 +1,19 @@
 import {
   List,
   Datagrid,
-  SimpleList,
-  InputProps,
   TextField,
   TextInput,
   EmailField,
-  ReferenceField,
-  ReferenceInput,
-  UrlField,
   Edit,
   required,
   Create,
   EditButton,
   SimpleForm,
-  ImageField,
-  ImageInput,
 } from "react-admin";
 
 import './lists.css'; 
 
+// Usuarios List Component
 export const UsuariosList = () => (
   <List>
     <div className="custom-list"> 
@@ -35,34 +29,42 @@ export const UsuariosList = () => (
   </List>
 );
 
+// Usuarios Edit Component
 export const UsuariosEdit = () => (
   <Edit>
-    <SimpleForm>
-      <TextInput source="id" InputProps={{ disabled: true }} />
-      <TextInput source="nombre" validate={required()}/>
-      {/*<TextInput source="apellido" validate={required()}/>*/}
-      <TextInput source="edad" />
-      <TextInput source="telefono" />
-      <TextInput source="email" validate={required()}/>
-      <TextInput source="rol" validate={required()}/>
-      <TextInput source="usuario" validate={required()}/>
-      <TextInput source="password" validate={required()}/>
-    </SimpleForm>
+    <div className="custom-list">
+      <h2 className="custom-title">Editar Usuario</h2>
+      <SimpleForm>
+        <TextInput source="id" disabled />
+        <TextInput source="nombre" validate={required()} />
+        {/*<TextInput source="apellido" validate={required()}/>*/}
+        <TextInput source="edad" />
+        <TextInput source="telefono" />
+        <TextInput source="email" validate={required()} />
+        <TextInput source="rol" validate={required()} />
+        <TextInput source="usuario" validate={required()} />
+        <TextInput source="password" validate={required()} />
+      </SimpleForm>
+    </div>
   </Edit>
 );
 
+// Usuarios Create Component
 export const UsuariosCreate = () => (
   <Create>
-    <SimpleForm>
-      <TextInput source="id" InputProps={{ disabled: true }} />
-      <TextInput source="nombre" validate={required()}/>
-      {/*<TextInput source="apellido" validate={required()}/>*/}
-      <TextInput source="edad" />
-      <TextInput source="telefono" />
-      <TextInput source="email" validate={required()}/>
-      <TextInput source="rol" validate={required()}/>
-      <TextInput source="usuario" validate={required()}/>
-      <TextInput source="password" validate={required()} />
-    </SimpleForm>
+    <div className="custom-list">
+      <h2 className="custom-title">Crear Usuario</h2>
+      <SimpleForm>
+        <TextInput source="id" disabled />
+        <TextInput source="nombre" validate={required()} />
+        {/*<TextInput source="apellido" validate={required()}/>*/}
+        <TextInput source="edad" />
+        <TextInput source="telefono" />
+        <TextInput source="email" validate={required()} />
+        <TextInput source="rol" validate={required()} />
+        <TextInput source="usuario" validate={required()} />
+        <TextInput source="password" validate={required()} />
+      </SimpleForm>
+    </div>
   </Create>
 );
