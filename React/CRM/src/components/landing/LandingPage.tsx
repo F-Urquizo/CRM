@@ -1,30 +1,57 @@
 import React, { useEffect, useState } from "react";
 import dataProvider from "../../dataProvider";
 import "./LandingPage.css";
+import DonationModal from "./DonationModal";
 
 const LandingPage: React.FC = () => {
   const [userName, setUserName] = useState("");
+  const [userId, setUserId] = useState("");
+  const [hasDonated, setHasDonated] = useState(false);
   const [error, setError] = useState("");
   const [showSettingsMenu, setShowSettingsMenu] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [donationAmount, setDonationAmount] = useState<number | null>(null);
+  const [donationDate, setDonationDate] = useState<string | null>(null);
 
-  // Efecto para obtener el nombre del usuario
+  // Efecto para obtener el nombre del usuario y verificar si ha hecho donaciones
   useEffect(() => {
-    const fetchUserName = async () => {
+    const fetchUserData = async () => {
       const username = localStorage.getItem("username");
       if (username) {
         try {
-          const response = await dataProvider.getOne("usuarios/username", {
+          // Obtener el usuario por su nombre de usuario
+          const userResponse = await dataProvider.getOne("usuarios/username", {
             id: username,
           });
-          setUserName(response.data?.nombre || username);
+
+          const userId = userResponse.data?._id;
+          setUserName(userResponse.data?.nombre || username);
+          setUserId(userId);
+
+          // Buscar donaciones filtrando por el userId
+          const donationsResponse = await dataProvider.getList("donaciones", {
+            // Filtrar donaciones por usuarioId
+            filter: { usuarioId: userId },
+            pagination: { page: 1, perPage: 1 },
+          });
+
+          // Verificar si hay donaciones para este usuario
+          if (donationsResponse.data.length > 0) {
+            // Si hay donaciones, el usuario ha donado
+            setHasDonated(true);
+          } else {
+            // Si no hay donaciones, no ha donado
+            setHasDonated(false);
+          }
         } catch (err) {
-          console.error("Error fetching user data:", err);
-          setError("Error al cargar la información del usuario");
+          console.error("Error fetching user or donation data:", err);
+          setError("Error al cargar la información del usuario o donaciones");
         }
       }
     };
 
-    fetchUserName();
+    fetchUserData();
   }, []);
 
   // Función para cerrar sesión
@@ -39,9 +66,42 @@ const LandingPage: React.FC = () => {
     setShowSettingsMenu(!showSettingsMenu);
   };
 
+  const handleDonate = () => {
+    setShowModal(true);
+  };
+
+  const handleConfirmDonation = (amount: number, date: string) => {
+    console.log("Donación confirmada: ", { amount, date });
+    setDonationAmount(amount);
+    setDonationDate(date);
+    setShowConfirmationModal(true);
+  };
+
+  const handleAPIDonation = async (amount: number, date: string) => {
+    try {
+      const donationData = {
+        usuarioId: userId,
+        formaDePago: "Crédito",
+        cantidad: amount,
+        fecha: date,
+      };
+
+      // Realizar el POST a la base de datos
+      const response = await dataProvider.create("donaciones", {
+        data: donationData,
+      });
+
+      console.log("Donación guardada exitosamente:", response.data);
+      setHasDonated(true);
+    } catch (error) {
+      console.log("Error al guardar la donación:", error);
+      setError("Error al realizar la donación, por favor inténtelo de nuevo.");
+    }
+  };
+
   return (
     <div className="landing-page">
-      {/* Sección de Agradecimiento con imagen de fondo */}
+      {/* Sección de Agradecimiento o Invitación con imagen de fondo */}
       <section
         className="thanks-section"
         style={{ backgroundImage: `url('/cisternaFondo.png')` }}
@@ -57,23 +117,42 @@ const LandingPage: React.FC = () => {
             <span className="nombre-fundacion">Fundación Sanders</span>
           </div>
 
-          {/* Texto de agradecimiento */}
+          {/* Texto condicional dependiendo de si el usuario ha donado o no */}
           <div className="thanks-text">
-            <h1>Gracias por tu donación, {userName ? userName : "donador"}!</h1>
-            {error ? (
-              <p>{error}</p>
+            {hasDonated ? (
+              <>
+                <h1>
+                  Gracias por tu donación, {userName ? userName : "donador"}!
+                </h1>
+                <p>
+                  Gracias a tu generosa donación, estamos un paso más cerca de
+                  mejorar la vida de muchas personas que carecen de acceso a
+                  agua potable. Tu apoyo no solo proporciona un recurso vital
+                  como el agua, sino que también trae esperanza y un futuro más
+                  brillante para familias y comunidades que dependen de tu
+                  ayuda. Cada gota cuenta, y con tu colaboración, estamos
+                  construyendo un mundo más justo y solidario, donde el agua
+                  limpia ya no es un lujo, sino un derecho para todos. Gracias
+                  por creer en nuestra causa y por formar parte de este cambio.
+                </p>
+              </>
             ) : (
-              <p>
-                Gracias a tu generosa donación, estamos un paso más cerca de
-                mejorar la vida de muchas personas que carecen de acceso a agua
-                potable. Tu apoyo no solo proporciona un recurso vital como el
-                agua, sino que también trae esperanza y un futuro más brillante
-                para familias y comunidades que dependen de tu ayuda. Cada gota
-                cuenta, y con tu colaboración, estamos construyendo un mundo más
-                justo y solidario, donde el agua limpia ya no es un lujo, sino
-                un derecho para todos. Gracias por creer en nuestra causa y por
-                formar parte de este cambio.
-              </p>
+              <>
+                <h1>
+                  ¡Únete a nuestra causa {userName}, transforma vidas con tu
+                  donación!
+                </h1>
+                <p>
+                  Tu ayuda puede marcar la diferencia en la vida de muchas
+                  personas que no tienen acceso a agua potable. Con tu apoyo, no
+                  solo podemos proporcionar este recurso esencial, sino también
+                  llevar esperanza y crear un futuro más prometedor para
+                  familias y comunidades enteras. Cada donación, por pequeña que
+                  sea, nos acerca a un mundo más justo, donde el agua limpia no
+                  es un privilegio, sino un derecho universal. ¡Sé parte de este
+                  cambio y ayuda a construir un mañana mejor!
+                </p>
+              </>
             )}
           </div>
 
@@ -153,7 +232,46 @@ const LandingPage: React.FC = () => {
         </div>
 
         {/* Botón de donación */}
-        <button className="donate-button">Realiza una donación</button>
+        <button className="donate-button" onClick={handleDonate}>
+          Realiza una donación
+        </button>
+
+        {/* Modal para realizar donación */}
+        {showModal && (
+          <DonationModal
+            onClose={() => setShowModal(false)}
+            onConfirm={handleConfirmDonation}
+          />
+        )}
+
+        {showConfirmationModal && (
+          <div className="confirmation-modal-overlay">
+            <div className="confirmation-modal-content">
+              <h3>¿Desea proceder con la donación?</h3>
+              <div className="confirmation-modal-buttons">
+                <button
+                  onClick={() => setShowConfirmationModal(false)}
+                  className="cancel-button"
+                >
+                  Atrás
+                </button>
+                <button
+                  onClick={() => {
+                    setShowConfirmationModal(false);
+                    console.log("Donación confirmada.");
+                    // Guardar la donación en la base de datos llamando a la función
+                    if (donationAmount && donationDate) {
+                      handleAPIDonation(donationAmount, donationDate);
+                    }
+                  }}
+                  className="confirm-button"
+                >
+                  Confirmar
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Compartir en redes sociales */}
         <div className="social-share">

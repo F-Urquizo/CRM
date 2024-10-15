@@ -43,11 +43,12 @@ const donacionSchema = new mongoose.Schema({
 });*/
 
 const donacionSchema = new mongoose.Schema({
-  usuarioId: { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario' }, // Reference to the Usuario model
+  usuarioId: { type: mongoose.Schema.Types.ObjectId, ref: "Usuario" }, // Reference to the Usuario model
   formaDePago: String,
   cantidad: Number,
   fecha: { type: Date, default: Date.now },
 });
+
 
 const proyectoSchema = new mongoose.Schema({
   nombre: String,
@@ -55,6 +56,7 @@ const proyectoSchema = new mongoose.Schema({
   financiamiento_requerido: Number,
   financiamiento_actual: Number,
 })
+
 
 
 /*
@@ -226,7 +228,15 @@ app.delete("/usuarios", async (req, res) => {
 // GET donaciones
 app.get("/donaciones", async (req, res) => {
   try {
-    const donaciones = await Donacion.find();
+    const { usuarioId } = req.query;
+    let query = {};
+
+    // Si se pasa un usuarioId en los filtros, lo añadimos a la consulta
+    if (usuarioId) {
+      query.usuarioId = usuarioId;
+    }
+
+    const donaciones = await Donacion.find(query);
     res.json(donaciones);
   } catch (err) {
     res.status(500).send(err.message);
@@ -247,7 +257,10 @@ app.get("/donaciones/:id", async (req, res) => {
 */
 app.get("/donaciones/:id", async (req, res) => {
   try {
-    const donacion = await Donacion.findById(req.params.id).populate('usuarioId', 'nombre');
+    const donacion = await Donacion.findById(req.params.id).populate(
+      "usuarioId",
+      "nombre"
+    );
     if (!donacion) return res.status(404).send("Donacion not found");
     res.json(donacion);
   } catch (err) {
@@ -312,14 +325,13 @@ app.put("/donaciones/:id", async (req, res) => {
       req.params.id,
       req.body,
       { new: true }
-    ).populate('usuarioId', 'nombre');
+    ).populate("usuarioId", "nombre");
     if (!updatedDonacion) return res.status(404).send("Donacion not found");
     res.json(updatedDonacion);
   } catch (err) {
     res.status(400).send(err.message);
   }
 });
-
 
 // DELETE donacion
 app.delete("/donaciones/:id", async (req, res) => {
@@ -411,7 +423,6 @@ app.delete("/proyectos/:id", async (req, res) => {
     res.status(500).send(err.message);
   }
 });
-
 
 /*
 // GET donaciones with populated usuarioId
