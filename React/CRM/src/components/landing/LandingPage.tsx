@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import dataProvider from "../../dataProvider";
 import "./LandingPage.css";
 import DonationModal from "./DonationModal";
+import TotalFinanciamientoByProyecto from "../chartBox/TotalFinanciamientoByProyecto";
+import TotalFinanciamientoPorProyecto from "../chartBox/TotalFinanciamientoPorProyecto";
 
 const LandingPage: React.FC = () => {
   const [userName, setUserName] = useState("");
@@ -190,9 +192,13 @@ const LandingPage: React.FC = () => {
             condiciones de vida.
           </p>
         </div>
-        <div className="progress-placeholder">
-          <h3>Progreso del Proyecto</h3>
-          <div className="graph-placeholder">[Gráfica de progreso]</div>
+        <div className="graphs-container">
+          <div className="graph-left">
+            <TotalFinanciamientoByProyecto />
+          </div>
+          <div className="graph-right">
+            <TotalFinanciamientoPorProyecto />
+          </div>
         </div>
       </section>
 
