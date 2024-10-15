@@ -31,7 +31,7 @@ const TotalDonationsByPaymentMethod = () => {
 
     return (
         <div style={{ width: "100%", height: "400px" }}> 
-            <span>Total Donations By Payment Method</span>
+            <span>Total de Donaciones por Método de Pago</span>
             <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                     <Tooltip />

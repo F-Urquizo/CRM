@@ -4,7 +4,11 @@ import TotalDonationsByClient from "../../components/chartBox/TotalDonationsByCl
 import TotalDonationsByPaymentMethod from "../../components/chartBox/TotalDonationsByPaymentMethod";
 import TotalDonationsByDate from "../../components/chartBox/TotalDonationsByDate";
 import UsersAgeChart from "../../components/chartBox/UsersAgeChart";
-import DonationsByDate from "../../components/chartBox/DonationsByDate";
+{/*import DonationsByDate from "../../components/chartBox/DonationsByDate"; */}
+import TotalFinanciamientoByProyecto from "../../components/chartBox/TotalFinanciamientoByProyecto";
+import TotalFinanciamientoPorProyecto from "../../components/chartBox/TotalFinanciamientoPorProyecto";
+
+
 
 
 import "./dashboard.css";
@@ -40,10 +44,12 @@ const dashboard = () => {
       </div> 
       */}
       {/*<div className="box box2"><ChartBox/></div>*/}
-      <div className="box box2"><TotalDonationsByClient /></div>
+      <div className="box box10"><TotalDonationsByClient /></div>
       <div className="box box2"><TotalDonationsByPaymentMethod /></div>
-      <div className="box box5"><UsersAgeChart/></div>
-      <div className="box box3"><TotalDonationsByDate/></div>
+      <div className="box box7"><TotalFinanciamientoByProyecto /></div>
+      <div className="box box7"><TotalFinanciamientoPorProyecto /></div>
+      <div className="box box2"><UsersAgeChart/></div>
+      <div className="box box2"><TotalDonationsByDate/></div>
       {/*<div className="box box6"><ChartBox/></div>*/}
       {/*<div className="box box7">Box7</div>*/}
       {/*<div className="box box8">Box7</div>*/}

@@ -32,7 +32,7 @@ const TotalDonationsByClient = () => {
 
     return (
         <div style={{ width: "100%", height: "400px" }}> 
-            <span>Total Donations By Client</span>
+            <span>Donaciones Totales por Cliente</span>
             <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={chartData}>
                     <CartesianGrid strokeDasharray="3 3" />

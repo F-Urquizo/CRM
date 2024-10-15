@@ -49,7 +49,7 @@ const DonationsByDate = () => {
 
     return (
         <div style={{ width: "100%", height: "400px" }}>
-            <span>Donations By Date</span>
+            <span>Donaciones por Fecha</span>
             <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={chartData}>
                     <CartesianGrid strokeDasharray="3 3" />

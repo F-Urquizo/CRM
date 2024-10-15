@@ -35,10 +35,10 @@ const CustomMenu = (props: MenuProps) => {
 
           {/* Botón de Log Out con el mismo estilo */}
           <div className="item">
-            <span className="title">SESION</span>
+            <span className="title">SESIÓN</span>
             <div className="listItem" onClick={handleLogout}>
               <img src="logout.png" alt="Log Out Icon" />
-              <span className="listItemTitle">Log Out</span>
+              <span className="listItemTitle">Cerrar Sesión</span>
             </div>
           </div>
         </div>
