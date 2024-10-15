@@ -1,7 +1,7 @@
 export const menuAdmin = [
   {
     id: 1,
-    title: "MENU",
+    title: "MENÚ",
     listItems: [
       {
         id: 1,
@@ -11,15 +11,21 @@ export const menuAdmin = [
       },
       {
         id: 2,
-        title: "Donors",
+        title: "Donadores",
         url: "usuarios",
         icon: "donadores.png",
       },
       {
         id: 3,
-        title: "Donations",
+        title: "Donaciones",
         url: "/donaciones",
         icon: "donaciones.png",
+      },
+      {
+        id: 4,
+        title: "Proyectos",
+        url: "/proyectos",
+        icon: "wrench.png",
       }
     ],
   },

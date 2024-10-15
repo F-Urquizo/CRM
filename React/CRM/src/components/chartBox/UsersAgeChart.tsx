@@ -22,7 +22,7 @@ const UsersAgeChart = () => {
 
     return (
         <div style={{ width: "100%", height: "400px" }}>
-            <span>User Age Distribution</span>
+            <span>Distribución de Usuarios por Edades</span>
             <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={chartData}>
                     <CartesianGrid strokeDasharray="3 3" />

@@ -8,6 +8,7 @@ import {
 import { Layout } from "./Layout";
 import dataProvider from "./dataProvider";
 import { authProvider } from "./AuthProvider";
+import { i18nProvider } from "./i18n/i18nProvider";
 import Dashboard from "./Pages/dashboard/dashboard";
 
 import {
@@ -20,6 +21,11 @@ import {
   DonacionesEdit,
   DonacionesCreate,
 } from "./Pages/donaciones";
+import {
+  ProyectosList,
+  ProyectosEdit,
+  ProyectosCreate,
+} from "./Pages/proyectos";
 import "./styles/global.css";
 import "./styles/variables.css";
 import LoginPage from "./Pages/login/LoginPage";
@@ -29,6 +35,7 @@ export const App = () => (
     layout={Layout}
     authProvider={authProvider}
     dataProvider={dataProvider}
+    i18nProvider={i18nProvider}
     dashboard={Dashboard}
     loginPage={LoginPage}
 
@@ -44,6 +51,12 @@ export const App = () => (
       list={DonacionesList}
       edit={DonacionesEdit}
       create={DonacionesCreate}
+    ></Resource>
+    <Resource
+      name="proyectos"
+      list={ProyectosList}
+      edit={ProyectosEdit}
+      create={ProyectosCreate}
     ></Resource>
   </Admin>
 );
