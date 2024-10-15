@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import dataProvider from "../../dataProvider";
 import "./LandingPage.css";
 import DonationModal from "./DonationModal";
+import TotalFinanciamientoByProyecto from "../chartBox/TotalFinanciamientoByProyecto";
+import TotalFinanciamientoPorProyecto from "../chartBox/TotalFinanciamientoPorProyecto";
+import { useRefresh } from "react-admin";
 
 const LandingPage: React.FC = () => {
   const [userName, setUserName] = useState("");
@@ -13,6 +16,7 @@ const LandingPage: React.FC = () => {
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [donationAmount, setDonationAmount] = useState<number | null>(null);
   const [donationDate, setDonationDate] = useState<string | null>(null);
+  const refresh = useRefresh();
 
   // Efecto para obtener el nombre del usuario y verificar si ha hecho donaciones
   useEffect(() => {
@@ -93,6 +97,7 @@ const LandingPage: React.FC = () => {
 
       console.log("Donación guardada exitosamente:", response.data);
       setHasDonated(true);
+      refresh();
     } catch (error) {
       console.log("Error al guardar la donación:", error);
       setError("Error al realizar la donación, por favor inténtelo de nuevo.");
@@ -190,9 +195,13 @@ const LandingPage: React.FC = () => {
             condiciones de vida.
           </p>
         </div>
-        <div className="progress-placeholder">
-          <h3>Progreso del Proyecto</h3>
-          <div className="graph-placeholder">[Gráfica de progreso]</div>
+        <div className="graphs-container">
+          <div className="graph-left">
+            <TotalFinanciamientoByProyecto />
+          </div>
+          <div className="graph-right">
+            <TotalFinanciamientoPorProyecto />
+          </div>
         </div>
       </section>
 
