@@ -49,6 +49,16 @@ const donacionSchema = new mongoose.Schema({
   fecha: { type: Date, default: Date.now },
 });
 
+
+const proyectoSchema = new mongoose.Schema({
+  nombre: String,
+  ubicacion: String,
+  financiamiento_requerido: Number,
+  financiamiento_actual: Number,
+})
+
+
+
 /*
 const donacionSchema = new mongoose.Schema({
   usuarioId: { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario' }, // Reference to the Usuarios collection
@@ -67,6 +77,7 @@ const gastoSchema = new mongoose.Schema({
 
 const Usuario = mongoose.model("Usuario", usuarioSchema, "usuarios");
 const Donacion = mongoose.model("Donacion", donacionSchema, "donaciones");
+const Proyecto = mongoose.model("Proyecto", proyectoSchema, "proyectos");
 const Gasto = mongoose.model("Gasto", gastoSchema, "gastos");
 
 // Rutas
@@ -258,17 +269,6 @@ app.get("/donaciones/:id", async (req, res) => {
 });
 
 /*
-// POST donación
-app.post("/donaciones", async (req, res) => {
-  try {
-    const newDonacion = new Donacion(req.body);
-    await newDonacion.save();
-    res.status(201).json(newDonacion);
-  } catch (err) {
-    res.status(400).send(err.message);
-  }
-});
-*/
 app.post("/donaciones", async (req, res) => {
   try {
     const { usuarioId, formaDePago, cantidad } = req.body; // usuarioId is passed here
@@ -279,6 +279,29 @@ app.post("/donaciones", async (req, res) => {
     res.status(400).send(err.message);
   }
 });
+*/
+
+app.post("/donaciones", async (req, res) => {
+  try {
+    const { usuarioId, formaDePago, cantidad } = req.body;
+    const newDonacion = new Donacion({ usuarioId, formaDePago, cantidad });
+
+    await newDonacion.save();
+
+    const proyecto = await Proyecto.findOne().sort({ financiamiento_actual: 1 }).limit(1);
+
+    if (proyecto) {
+      proyecto.financiamiento_actual += cantidad;
+
+      await proyecto.save();
+    }
+
+    res.status(201).json(newDonacion);
+  } catch (err) {
+    res.status(400).send(err.message);
+  }
+});
+
 
 /*
 // PUT para actuallizar una donacion
@@ -314,7 +337,87 @@ app.put("/donaciones/:id", async (req, res) => {
 app.delete("/donaciones/:id", async (req, res) => {
   try {
     const deletedDonacion = await Donacion.findByIdAndDelete(req.params.id);
+    
     if (!deletedDonacion) return res.status(404).send("Donacion not found");
+    
+    const cantidad = deletedDonacion.cantidad;
+    
+    const proyecto = await Proyecto.findOne().sort({ financiamiento_actual: -1 }).limit(1);
+
+    if (proyecto) {
+      proyecto.financiamiento_actual -= cantidad;
+
+      await proyecto.save();
+    }
+
+    res.status(204).send();
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
+
+
+
+// ENDPOINTS PROYECTOS
+
+// GET proyectos
+app.get("/proyectos", async (req, res) => {
+  try {
+    const proyectos = await Proyecto.find();
+    res.json(proyectos);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
+
+// GET proyecto by ID
+app.get("/proyectos/:id", async (req, res) => {
+  try {
+    const proyecto = await Proyecto.findById(req.params.id);
+    if (!proyecto) return res.status(404).send("Proyecto not found");
+    res.json(proyecto);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
+
+// POST proyecto
+app.post("/proyectos", async (req, res) => {
+  try {
+    const { nombre, ubicacion, financiamiento_requerido, financiamiento_actual } = req.body;
+    const newProyecto = new Proyecto({
+      nombre,
+      ubicacion,
+      financiamiento_requerido,
+      financiamiento_actual,
+    });
+    await newProyecto.save();
+    res.status(201).json(newProyecto);
+  } catch (err) {
+    res.status(400).send(err.message);
+  }
+});
+
+// PUT proyecto (update by ID)
+app.put("/proyectos/:id", async (req, res) => {
+  try {
+    const updatedProyecto = await Proyecto.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+    if (!updatedProyecto) return res.status(404).send("Proyecto not found");
+    res.json(updatedProyecto);
+  } catch (err) {
+    res.status(400).send(err.message);
+  }
+});
+
+// DELETE proyecto by ID
+app.delete("/proyectos/:id", async (req, res) => {
+  try {
+    const deletedProyecto = await Proyecto.findByIdAndDelete(req.params.id);
+    if (!deletedProyecto) return res.status(404).send("Proyecto not found");
     res.status(204).send();
   } catch (err) {
     res.status(500).send(err.message);
