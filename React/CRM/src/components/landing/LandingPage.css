@@ -77,28 +77,40 @@
 
 .project-info-section {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
   padding: 2rem;
   background-color: white;
 }
 
 .project-text {
-  max-width: 50%;
-}
-
-.progress-placeholder {
-  background-color: #e0e0e0;
-  padding: 1rem;
-  border-radius: 5px;
-  max-width: 40%;
-}
-
-.graph-placeholder {
-  border: 2px dashed #002f5f;
-  padding: 2rem;
-  font-size: 1.2rem;
-  color: #002f5f;
   text-align: center;
+  margin-bottom: 2rem;
+  max-width: 80%;
+}
+
+.graphs-container {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  max-width: 90%;
+  gap: 20px;
+}
+
+.graph-left {
+  flex: 2;
+  max-width: 65%;
+  background-color: #e0e0e0;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.graph-right {
+  flex: 1;
+  max-width: 35%;
+  background-color: #e0e0e0;
+  padding: 20px;
+  border-radius: 5px;
 }
 
 .awareness-section {
