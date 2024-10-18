@@ -7,7 +7,6 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 
-
 dotenv.config();
 
 // Inicializar app Express
@@ -45,21 +44,19 @@ const donacionSchema = new mongoose.Schema({
 });*/
 
 const donacionSchema = new mongoose.Schema({
-  usuarioId: { type: mongoose.Schema.Types.ObjectId, ref: "Usuario" }, // Reference to the Usuario model
+  // Reference to the Usuario model
+  usuarioId: { type: mongoose.Schema.Types.ObjectId, ref: "Usuario" },
   formaDePago: String,
   cantidad: Number,
   fecha: { type: Date, default: Date.now },
 });
-
 
 const proyectoSchema = new mongoose.Schema({
   nombre: String,
   ubicacion: String,
   financiamiento_requerido: Number,
   financiamiento_actual: Number,
-})
-
-
+});
 
 /*
 const donacionSchema = new mongoose.Schema({
@@ -134,27 +131,28 @@ app.delete("/gastos/:id", async (req, res) => {
   }
 });
 
-
 // Middleware for JWT authentication
 const authenticateToken = (req, res, next) => {
   const token = req.header("Authorization")?.split(" ")[1];
-  
+
   if (!token) {
-    console.log("No token provided."); // Log if no token is provided
+    // Log if no token is provided
+    console.log("No token provided.");
     return res.sendStatus(401);
   }
 
   jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
     if (err) {
-      console.log("Token verification failed:", err.message); // Log verification failure
+      // Log verification failure
+      console.log("Token verification failed:", err.message);
       return res.sendStatus(403);
     }
-    console.log("Token verified successfully:", user); // Log successful verification
+    // Log successful verification
+    console.log("Token verified successfully:", user);
     req.user = user;
     next();
   });
 };
-
 
 // GET usuarios
 app.get("/usuarios", authenticateToken, async (req, res) => {
@@ -194,7 +192,9 @@ app.post("/usuarios", authenticateToken, async (req, res) => {
   try {
     const { nombre, apellido, edad, telefono, email, rol, usuario, password } =
       req.body;
-    const hashedPassword = await bcrypt.hash(password, 10); // Hash the password
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+    // Create a new Usuario instance with the hashed password
     const newUsuario = new Usuario({
       nombre,
       apellido,
@@ -204,9 +204,11 @@ app.post("/usuarios", authenticateToken, async (req, res) => {
       rol,
       usuario,
       password: hashedPassword,
-    }); // Create a new Usuario instance with the hashed password
-    await newUsuario.save(); // Save the new user
-    res.status(201).json(newUsuario); // Return the new user in the response
+    });
+    // Save the new user
+    await newUsuario.save();
+    // Return the new user in the response
+    res.status(201).json(newUsuario);
   } catch (err) {
     res.status(500).send(err.message);
   }
@@ -312,7 +314,9 @@ app.post("/donaciones", authenticateToken, async (req, res) => {
 
     await newDonacion.save();
 
-    const proyecto = await Proyecto.findOne().sort({ financiamiento_actual: 1 }).limit(1);
+    const proyecto = await Proyecto.findOne()
+      .sort({ financiamiento_actual: 1 })
+      .limit(1);
 
     if (proyecto) {
       proyecto.financiamiento_actual += cantidad;
@@ -325,7 +329,6 @@ app.post("/donaciones", authenticateToken, async (req, res) => {
     res.status(400).send(err.message);
   }
 });
-
 
 /*
 // PUT para actuallizar una donacion
@@ -361,12 +364,14 @@ app.put("/donaciones/:id", authenticateToken, async (req, res) => {
 app.delete("/donaciones/:id", authenticateToken, async (req, res) => {
   try {
     const deletedDonacion = await Donacion.findByIdAndDelete(req.params.id);
-    
+
     if (!deletedDonacion) return res.status(404).send("Donacion not found");
-    
+
     const cantidad = deletedDonacion.cantidad;
-    
-    const proyecto = await Proyecto.findOne().sort({ financiamiento_actual: -1 }).limit(1);
+
+    const proyecto = await Proyecto.findOne()
+      .sort({ financiamiento_actual: -1 })
+      .limit(1);
 
     if (proyecto) {
       proyecto.financiamiento_actual -= cantidad;
@@ -379,8 +384,6 @@ app.delete("/donaciones/:id", authenticateToken, async (req, res) => {
     res.status(500).send(err.message);
   }
 });
-
-
 
 // ENDPOINTS PROYECTOS
 
@@ -408,7 +411,12 @@ app.get("/proyectos/:id", authenticateToken, async (req, res) => {
 // POST proyecto
 app.post("/proyectos", authenticateToken, async (req, res) => {
   try {
-    const { nombre, ubicacion, financiamiento_requerido, financiamiento_actual } = req.body;
+    const {
+      nombre,
+      ubicacion,
+      financiamiento_requerido,
+      financiamiento_actual,
+    } = req.body;
     const newProyecto = new Proyecto({
       nombre,
       ubicacion,
@@ -520,7 +528,7 @@ app.get("/dashboard/top-donaciones", async (req, res) => {
   }
 });
 
-//Total de donaciones
+// Total de donaciones
 app.get("/dashboard/total-donaciones", async (req, res) => {
   try {
     const totalDonaciones = await Donacion.aggregate([
@@ -537,7 +545,7 @@ app.get("/dashboard/total-donaciones", async (req, res) => {
   }
 });
 
-//Total Gastos
+// Total Gastos
 app.get("/dashboard/total-gastos", async (req, res) => {
   try {
     const totalGastos = await Gasto.aggregate([
@@ -554,7 +562,7 @@ app.get("/dashboard/total-gastos", async (req, res) => {
   }
 });
 
-//Promedio de donaciones
+// Promedio de donaciones
 app.get("/dashboard/promedio-donaciones", async (req, res) => {
   try {
     const promedioDonaciones = await Donacion.aggregate([
@@ -571,7 +579,7 @@ app.get("/dashboard/promedio-donaciones", async (req, res) => {
   }
 });
 
-//Cant de donaciones
+// Cant de donaciones
 app.get("/dashboard/cantidad-donaciones", async (req, res) => {
   try {
     const cantidadDonaciones = await Donacion.countDocuments();
@@ -581,7 +589,7 @@ app.get("/dashboard/cantidad-donaciones", async (req, res) => {
   }
 });
 
-//Donaciones por tipo de pago
+// Donaciones por tipo de pago
 app.get("/dashboard/tipo-pago", async (req, res) => {
   try {
     const tipoPago = await Donacion.aggregate([
@@ -598,7 +606,7 @@ app.get("/dashboard/tipo-pago", async (req, res) => {
   }
 });
 
-//Donaciones por mes
+// Donaciones por mes
 app.get("/dashboard/donaciones-por-mes", async (req, res) => {
   try {
     const donacionesPorMes = await Donacion.aggregate([
@@ -616,7 +624,7 @@ app.get("/dashboard/donaciones-por-mes", async (req, res) => {
   }
 });
 
-//Gastos por mes
+// Gastos por mes
 app.get("/dashboard/gastos-por-mes", async (req, res) => {
   try {
     const gastosPorMes = await Gasto.aggregate([
@@ -634,7 +642,7 @@ app.get("/dashboard/gastos-por-mes", async (req, res) => {
   }
 });
 
-//Progreso del proyecto
+// Progreso del proyecto
 app.get("/dashboard/progreso-proyecto", async (req, res) => {
   try {
     const totalDonaciones = await Donacion.aggregate([
@@ -653,7 +661,6 @@ app.get("/dashboard/progreso-proyecto", async (req, res) => {
 // GET usuario por nombre de usuario
 app.get("/usuarios/username/:username", authenticateToken, async (req, res) => {
   try {
-
     const usuario = await Usuario.findOne({ usuario: req.params.username });
     if (!usuario) return res.status(404).send("Usuario not found");
     res.json(usuario);
@@ -724,7 +731,6 @@ app.post("/auth", async (req, res) => {
     );
     console.log("Token generated:", token);
 
-
     res.json({ success: true, token, rol: user.rol, nombre: user.nombre });
   } catch (err) {
     console.error("Authentication error:", err);
@@ -737,7 +743,7 @@ const certificate = fs.readFileSync("../HTTPS/server.crt", "utf8");
 const ca = fs.readFileSync("../HTTPS/ca.crt", "utf8");
 const credentials = { key: privateKey, cert: certificate, ca: ca };
 
-//Servidor HTTPS
+// Servidor HTTPS
 const httpsServer = https.createServer(credentials, app);
 httpsServer.listen(port, () =>
   console.log(`Server running on port ${port} with HTTPS`)

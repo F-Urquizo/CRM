@@ -17,8 +17,8 @@ const TotalFinanciamientoPorProyecto = () => {
 
   // Aggregating data for pie chart
   const chartData = proyectos.map((proyecto) => ({
-    nombre: proyecto.nombre || "Unnamed", // Assuming 'nombre' is the field for project name
-    total: proyecto.financiamiento_requerido || 0, // Assuming 'financiamiento_requerido' is the field for required financing
+    nombre: proyecto.nombre || "Unnamed",
+    total: proyecto.financiamiento_requerido || 0,
   }));
 
   return (

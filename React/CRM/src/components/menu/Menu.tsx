@@ -11,7 +11,8 @@ const handleLogout = () => {
   // Lógica para cerrar sesión
   localStorage.removeItem("username");
   localStorage.removeItem("rol");
-  window.location.href = "/login"; // Redirigir a la página de login para limpiar el estado
+  // Redirigir a la página de login para limpiar el estado
+  window.location.href = "/login";
 };
 
 const CustomMenu = (props: MenuProps) => {

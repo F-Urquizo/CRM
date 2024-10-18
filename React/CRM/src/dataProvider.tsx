@@ -15,10 +15,10 @@ const httpClient = fetchUtils.fetchJson;
 
 // Function to get headers with token
 const getHeaders = () => {
-  const token = localStorage.getItem("token"); // Change this as necessary for your app structure
+  const token = localStorage.getItem("token");
   return new Headers({
     "Content-Type": "application/json",
-    "Authorization": `Bearer ${token}`, // Include the JWT token
+    Authorization: `Bearer ${token}`,
   });
 };
 
@@ -33,7 +33,9 @@ const dataProvider: DataProvider = {
       });
     }
 
-    const response = await httpClient(url.toString(), { headers: getHeaders() });
+    const response = await httpClient(url.toString(), {
+      headers: getHeaders(),
+    });
 
     const data = Array.isArray(response.json)
       ? response.json.map((item: any) => ({
@@ -105,12 +107,12 @@ const dataProvider: DataProvider = {
       `${apiUrl}/${resource}?ids=${params.ids.join(",")}`,
       { headers: getHeaders() }
     );
-  
+
     const data = response.json.map((item: any) => ({
       ...item,
       id: item._id,
     }));
-    
+
     return {
       data,
     };

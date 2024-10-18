@@ -13,7 +13,8 @@ export const Navbar = () => {
     localStorage.removeItem("username");
     localStorage.removeItem("rol");
     localStorage.removeItem("name");
-    window.location.reload(); // Recarga la página para aplicar el log out
+    // Recarga la página para aplicar el log out
+    window.location.reload();
   };
 
   const name = localStorage.getItem("name");
@@ -22,7 +23,7 @@ export const Navbar = () => {
     <div className="navbar">
       <div className="logo">
         <img src="logo.png" alt="Fundación Sanders logo" />
-        <span className="titulo">Fundación Sanders</span> 
+        <span className="titulo">Fundación Sanders</span>
       </div>
       <div className="icons">
         {/*
@@ -40,9 +41,7 @@ export const Navbar = () => {
           <span>Mbappe</span>
         </div>
         */}
-        <div style={{ fontSize: "18px" }}>
-          {name}
-        </div>
+        <div style={{ fontSize: "18px" }}>{name}</div>
         {/* Icono de configuraciones con evento de click */}
         {/*
         <img

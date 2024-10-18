@@ -1,27 +1,34 @@
-import { Box, Button, CircularProgress, TextField, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  TextField,
+  Stack,
+  Typography,
+} from "@mui/material";
 import React, { useState } from "react";
 import { useLogin, useNotify } from "react-admin";
 import axios from "axios"; // Para manejar el sign-up
-import hola from '/src/assets/hola.png';
-import logo from '/src/assets/images.jpg';
+import hola from "/src/assets/hola.png";
+import logo from "/src/assets/images.jpg";
 
 const LoginPage = () => {
   const login = useLogin();
   const notify = useNotify();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [email, setEmail] = useState('');
-  const [edad, setEdad] = useState(''); // Estado para la edad
-  const [telefono, setTelefono] = useState(''); // Estado para el teléfono
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [edad, setEdad] = useState("");
+  const [telefono, setTelefono] = useState("");
   const [loading, setLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [error, setError] = useState('');
-  const [isSignUp, setIsSignUp] = useState(false); // Estado para alternar entre sign-in y sign-up
+  const [error, setError] = useState("");
+  const [isSignUp, setIsSignUp] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
+    setError("");
 
     try {
       if (isSignUp) {
@@ -33,14 +40,18 @@ const LoginPage = () => {
           email,
           edad: parseInt(edad, 10),
           telefono,
-          rol: "Donador", // Siempre asigna el rol "Donador"
+          // Siempre asigna el rol "Donador"
+          rol: "Donador",
         });
 
         if (response.status === 201) {
-          notify('Cuenta creada exitosamente, por favor inicia sesión.', { type: 'success' });
-          setIsSignUp(false); // Cambia de nuevo a la vista de inicio de sesión
+          notify("Cuenta creada exitosamente, por favor inicia sesión.", {
+            type: "success",
+          });
+          // Cambia de nuevo a la vista de inicio de sesión
+          setIsSignUp(false);
         } else {
-          throw new Error('Error al crear la cuenta');
+          throw new Error("Error al crear la cuenta");
         }
       } else {
         // Si es login, realiza la solicitud de autenticación
@@ -49,8 +60,11 @@ const LoginPage = () => {
       }
     } catch (error) {
       setLoading(false);
-      setError('Error en la autenticación o creación de cuenta');
-      notify(error.response?.data?.message || 'Error al intentar la operación', { type: 'warning' });
+      setError("Error en la autenticación o creación de cuenta");
+      notify(
+        error.response?.data?.message || "Error al intentar la operación",
+        { type: "warning" }
+      );
     }
     setLoading(false);
   };
@@ -62,32 +76,40 @@ const LoginPage = () => {
       sx={{ "::-webkit-scrollbar": { display: "none" } }}
     >
       {/* Background */}
-      <Box sx={{
-        position: "absolute",
-        right: 0,
-        height: "100%",
-        width: "70%",
-        backgroundImage: `url(${logo})`,
-      }} />
-      
-      {/* Login/Signup form */}
-      <Box sx={{
-        position: "absolute",
-        left: 0,
-        height: "100%",
-        width: isLoggedIn ? "100%" : { xl: "30%", lg: "30%", md: "50%", xs: "100%" },
-        transition: "all 1s ease-in-out",
-        bgcolor: "#white"
-      }}>
-        <Box sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          opacity: isLoggedIn ? 0 : 1,
-          transition: "all 0.3s ease-in-out",
+      <Box
+        sx={{
+          position: "absolute",
+          right: 0,
           height: "100%",
-          "::-webkit-scrollbar": { display: "none" }
-        }}>
+          width: "70%",
+          backgroundImage: `url(${logo})`,
+        }}
+      />
+
+      {/* Login/Signup form */}
+      <Box
+        sx={{
+          position: "absolute",
+          left: 0,
+          height: "100%",
+          width: isLoggedIn
+            ? "100%"
+            : { xl: "30%", lg: "30%", md: "50%", xs: "100%" },
+          transition: "all 1s ease-in-out",
+          bgcolor: "#white",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            opacity: isLoggedIn ? 0 : 1,
+            transition: "all 0.3s ease-in-out",
+            height: "100%",
+            "::-webkit-scrollbar": { display: "none" },
+          }}
+        >
           {/* Header */}
           <Box sx={{ textAlign: "center", p: 5 }}>
             <Typography variant="h4" component="div" gutterBottom>
@@ -96,64 +118,93 @@ const LoginPage = () => {
           </Box>
 
           {/* Form */}
-          <Box sx={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            "::-webkit-scrollbar": { display: "none" }
-          }}>
-            <Box component="form" maxWidth={400} width="100%" onSubmit={handleSubmit}>
+          <Box
+            sx={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              "::-webkit-scrollbar": { display: "none" },
+            }}
+          >
+            <Box
+              component="form"
+              maxWidth={400}
+              width="100%"
+              onSubmit={handleSubmit}
+            >
               <Stack spacing={3}>
-                <TextField 
-                  label="Usuario" 
-                  fullWidth 
-                  value={username} 
-                  onChange={(e) => setUsername(e.target.value)} 
+                <TextField
+                  label="Usuario"
+                  fullWidth
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                 />
                 {isSignUp && (
                   <>
-                    <TextField 
-                      label="Email" 
-                      type="email" 
-                      fullWidth 
-                      value={email} 
-                      onChange={(e) => setEmail(e.target.value)} 
+                    <TextField
+                      label="Email"
+                      type="email"
+                      fullWidth
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
-                    <TextField 
-                      label="Edad" 
-                      type="number" 
-                      fullWidth 
-                      value={edad} 
-                      onChange={(e) => setEdad(e.target.value)} 
+                    <TextField
+                      label="Edad"
+                      type="number"
+                      fullWidth
+                      value={edad}
+                      onChange={(e) => setEdad(e.target.value)}
                     />
-                    <TextField 
-                      label="Teléfono" 
-                      type="tel" 
-                      fullWidth 
-                      value={telefono} 
-                      onChange={(e) => setTelefono(e.target.value)} 
+                    <TextField
+                      label="Teléfono"
+                      type="tel"
+                      fullWidth
+                      value={telefono}
+                      onChange={(e) => setTelefono(e.target.value)}
                     />
                   </>
                 )}
-                <TextField 
-                  label="Contraseña" 
-                  type="password" 
-                  fullWidth 
-                  value={password} 
-                  onChange={(e) => setPassword(e.target.value)} 
+                <TextField
+                  label="Contraseña"
+                  type="password"
+                  fullWidth
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
                 {error && <Typography color="error">{error}</Typography>}
-                <Button type="submit" size="large" variant="contained" color="success" disabled={loading}>
-                  {loading ? <CircularProgress size={24} /> : (isSignUp ? "Sign Up" : "Sign In")}
+                <Button
+                  type="submit"
+                  size="large"
+                  variant="contained"
+                  color="success"
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <CircularProgress size={24} />
+                  ) : isSignUp ? (
+                    "Sign Up"
+                  ) : (
+                    "Sign In"
+                  )}
                 </Button>
-                <Stack direction="row" justifyContent="space-between" alignItems="center">
-                  <Typography color="primary" onClick={() => setIsSignUp(!isSignUp)} sx={{ cursor: 'pointer' }}>
-                    {isSignUp ? "Ya tienes una cuenta? Inicia sesión" : "No tienes cuenta? Regístrate"}
+                <Stack
+                  direction="row"
+                  justifyContent="space-between"
+                  alignItems="center"
+                >
+                  <Typography
+                    color="primary"
+                    onClick={() => setIsSignUp(!isSignUp)}
+                    sx={{ cursor: "pointer" }}
+                  >
+                    {isSignUp
+                      ? "Ya tienes una cuenta? Inicia sesión"
+                      : "No tienes cuenta? Regístrate"}
                   </Typography>
                 </Stack>
               </Stack>
@@ -166,8 +217,7 @@ const LoginPage = () => {
               display="inline"
               fontWeight="bold"
               sx={{ "& > a": { color: "#d32f2f", ml: "5px" } }}
-            >
-            </Typography>
+            ></Typography>
           </Box>
 
           {/* Loading overlay */}
@@ -182,7 +232,7 @@ const LoginPage = () => {
                 top: 0,
                 left: 0,
                 bgcolor: "rgba(255,255,255,0.8)",
-                zIndex: 1000
+                zIndex: 1000,
               }}
             >
               <CircularProgress />

@@ -21,7 +21,7 @@ import {
   DateInput,
 } from "react-admin";
 
-import './lists.css';
+import "./lists.css";
 
 // Donaciones List Component
 export const DonacionesList = () => (
@@ -44,7 +44,7 @@ export const DonacionesList = () => (
 // Donaciones Edit Component
 export const DonacionesEdit = () => (
   <Edit>
-    <div className="custom-list"> {/* Added custom-list div */}
+    <div className="custom-list">
       <h2 className="custom-title">Editar Donación</h2>
       <SimpleForm>
         <TextInput source="id" InputProps={{ disabled: true }} />
@@ -55,21 +55,21 @@ export const DonacionesEdit = () => (
         <SelectInput
           source="formaDePago"
           choices={[
-            { id: 'Crédito', name: 'Crédito' },
-            { id: 'Efectivo', name: 'Efectivo' },
+            { id: "Crédito", name: "Crédito" },
+            { id: "Efectivo", name: "Efectivo" },
           ]}
           validate={required()}
         />
         <DateInput source="fecha" />
       </SimpleForm>
-    </div> {/* End of custom-list div */}
+    </div>
   </Edit>
 );
 
 // Donaciones Create Component
 export const DonacionesCreate = () => (
   <Create>
-    <div className="custom-list"> {/* Added custom-list div */}
+    <div className="custom-list">
       <h2 className="custom-title">Crear Donación</h2>
       <SimpleForm>
         <TextInput source="id" InputProps={{ disabled: true }} />
@@ -80,13 +80,13 @@ export const DonacionesCreate = () => (
         <SelectInput
           source="formaDePago"
           choices={[
-            { id: 'Crédito', name: 'Crédito' },
-            { id: 'Efectivo', name: 'Efectivo' },
+            { id: "Crédito", name: "Crédito" },
+            { id: "Efectivo", name: "Efectivo" },
           ]}
           validate={required()}
         />
         <DateInput source="fecha" />
       </SimpleForm>
-    </div> {/* End of custom-list div */}
+    </div>
   </Create>
 );

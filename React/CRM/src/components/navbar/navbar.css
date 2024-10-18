@@ -24,18 +24,17 @@
   display: flex;
   align-items: center;
   gap: 20px;
-  position: relative; /* Para manejar el menú desplegable */
+  position: relative;
 }
 
 .icon {
   height: 30px;
 }
 
-/* Estilos para el menú de configuración desplegable */
 .settings-menu {
   position: absolute;
   right: 0;
-  top: 50px; /* Ajusta según la posición de tu navbar */
+  top: 50px;
   background-color: white;
   border: 1px solid #ccc;
   padding: 10px;

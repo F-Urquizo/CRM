@@ -76,7 +76,6 @@
   }
 }
 
-
 /* Ensure the background color of the toolbar matches the SimpleForm */
 .MuiToolbar-root {
   background-color: var(--main-bg) !important;
@@ -86,32 +85,35 @@
 /* Style for buttons in the toolbar */
 .MuiToolbar-root .ra-save-button {
   background-color: var(--primary-color) !important;
-  color: white !important; /* Text color for the save button */
+  /* Text color for the save button */
+  color: white !important;
 }
 
 .MuiToolbar-root .ra-delete-button {
-  background-color: transparent; /* Keep the delete button background transparent */
-  color: red !important; /* Change the text color of the delete button to red */
+  /* Keep the delete button background transparent */
+  background-color: transparent;
+  /* Change the text color of the delete button to red */
+  color: red !important;
   border: none;
   padding: 8px 12px;
   border-radius: 5px;
   cursor: pointer;
   font-weight: bold;
-  transition: color 0.3s ease; /* Smooth transition for color */
+  /* Smooth transition for color */
+  transition: color 0.3s ease;
 }
 
 /* Hover effect for the delete button */
 .MuiToolbar-root .ra-delete-button:hover {
-  color: darkred; /* Darker shade on hover */
+  color: darkred;
 }
 
 /* Hover effect for buttons */
 .MuiToolbar-root .ra-save-button:hover {
-  background-color: var(--primary-color-dark) !important; /* Darker shade on hover */
+  background-color: var(--primary-color-dark) !important;
 }
 
 /* Ensure the SimpleForm has the same background color */
 .MuiPaper-root {
   background-color: var(--main-bg);
 }
-

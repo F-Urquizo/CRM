@@ -50,6 +50,6 @@
   position: sticky;
   bottom: 0;
   width: 100%;
-  background-color: var(--menu-bg-color); /* Esto mantiene el fondo cuando esté fijado */
+  background-color: var(--menu-bg-color);
   padding-top: 10px;
 }
