@@ -25,7 +25,7 @@ import "./lists.css";
 
 // Donaciones List Component
 export const DonacionesList = () => (
-  <List>
+  <List pagination={false}>
     <div className="custom-list">
       <h2 className="custom-title">Donaciones</h2>
       <Datagrid className="custom-datagrid">

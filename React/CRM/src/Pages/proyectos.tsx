@@ -23,7 +23,7 @@ import "./lists.css";
 
 // Proyectos List Component
 export const ProyectosList = () => (
-  <List>
+  <List pagination={false}>
     <div className="custom-list">
       <h2 className="custom-title">Proyectos</h2>
       <Datagrid className="custom-datagrid">

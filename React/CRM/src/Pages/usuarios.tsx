@@ -15,7 +15,7 @@ import './lists.css';
 
 // Usuarios List Component
 export const UsuariosList = () => (
-  <List>
+  <List pagination={false}>
     <div className="custom-list"> 
       <h2 className="custom-title">Usuarios</h2> 
       <Datagrid className="custom-datagrid"> 
