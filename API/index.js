@@ -188,7 +188,7 @@ app.post("/usuarios", async (req, res) => {
 */
 
 // POST usuario
-app.post("/usuarios", authenticateToken, async (req, res) => {
+app.post("/usuarios", async (req, res) => {
   try {
     const { nombre, apellido, edad, telefono, email, rol, usuario, password } =
       req.body;
