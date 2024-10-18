@@ -6,6 +6,8 @@ import fs from "fs";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+
+
 dotenv.config();
 
 // Inicializar app Express
@@ -132,8 +134,30 @@ app.delete("/gastos/:id", async (req, res) => {
   }
 });
 
+
+// Middleware for JWT authentication
+const authenticateToken = (req, res, next) => {
+  const token = req.header("Authorization")?.split(" ")[1];
+  
+  if (!token) {
+    console.log("No token provided."); // Log if no token is provided
+    return res.sendStatus(401);
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) {
+      console.log("Token verification failed:", err.message); // Log verification failure
+      return res.sendStatus(403);
+    }
+    console.log("Token verified successfully:", user); // Log successful verification
+    req.user = user;
+    next();
+  });
+};
+
+
 // GET usuarios
-app.get("/usuarios", async (req, res) => {
+app.get("/usuarios", authenticateToken, async (req, res) => {
   try {
     const usuarios = await Usuario.find();
     res.json(usuarios);
@@ -143,7 +167,7 @@ app.get("/usuarios", async (req, res) => {
 });
 
 // GET usuarios por id
-app.get("/usuarios/:id", async (req, res) => {
+app.get("/usuarios/:id", authenticateToken, async (req, res) => {
   try {
     const usuario = await Usuario.findById(req.params.id);
     if (!usuario) return res.status(404).send("Usuario not found");
@@ -166,7 +190,7 @@ app.post("/usuarios", async (req, res) => {
 */
 
 // POST usuario
-app.post("/usuarios", async (req, res) => {
+app.post("/usuarios", authenticateToken, async (req, res) => {
   try {
     const { nombre, apellido, edad, telefono, email, rol, usuario, password } =
       req.body;
@@ -189,7 +213,7 @@ app.post("/usuarios", async (req, res) => {
 });
 
 // PUT para actualizar un usuario
-app.put("/usuarios/:id", async (req, res) => {
+app.put("/usuarios/:id", authenticateToken, async (req, res) => {
   try {
     const updatedUsuario = await Usuario.findByIdAndUpdate(
       req.params.id,
@@ -204,7 +228,7 @@ app.put("/usuarios/:id", async (req, res) => {
 });
 
 // DELETE usuario
-app.delete("/usuarios/:id", async (req, res) => {
+app.delete("/usuarios/:id", authenticateToken, async (req, res) => {
   try {
     const deletedUsuario = await Usuario.findByIdAndDelete(req.params.id);
     if (!deletedUsuario) return res.status(404).send("Usuario not found");
@@ -215,7 +239,7 @@ app.delete("/usuarios/:id", async (req, res) => {
 });
 
 // DELETE MANY
-app.delete("/usuarios", async (req, res) => {
+app.delete("/usuarios", authenticateToken, async (req, res) => {
   try {
     const { ids } = req.body;
     const deletedUsuarios = await Usuario.deleteMany({ _id: { $in: ids } });
@@ -226,7 +250,7 @@ app.delete("/usuarios", async (req, res) => {
 });
 
 // GET donaciones
-app.get("/donaciones", async (req, res) => {
+app.get("/donaciones", authenticateToken, async (req, res) => {
   try {
     const { usuarioId } = req.query;
     let query = {};
@@ -255,7 +279,7 @@ app.get("/donaciones/:id", async (req, res) => {
   }
 });
 */
-app.get("/donaciones/:id", async (req, res) => {
+app.get("/donaciones/:id", authenticateToken, async (req, res) => {
   try {
     const donacion = await Donacion.findById(req.params.id).populate(
       "usuarioId",
@@ -281,7 +305,7 @@ app.post("/donaciones", async (req, res) => {
 });
 */
 
-app.post("/donaciones", async (req, res) => {
+app.post("/donaciones", authenticateToken, async (req, res) => {
   try {
     const { usuarioId, formaDePago, cantidad } = req.body;
     const newDonacion = new Donacion({ usuarioId, formaDePago, cantidad });
@@ -319,7 +343,7 @@ app.put("/donaciones/:id", async (req, res) => {
   }
 });
 */
-app.put("/donaciones/:id", async (req, res) => {
+app.put("/donaciones/:id", authenticateToken, async (req, res) => {
   try {
     const updatedDonacion = await Donacion.findByIdAndUpdate(
       req.params.id,
@@ -334,7 +358,7 @@ app.put("/donaciones/:id", async (req, res) => {
 });
 
 // DELETE donacion
-app.delete("/donaciones/:id", async (req, res) => {
+app.delete("/donaciones/:id", authenticateToken, async (req, res) => {
   try {
     const deletedDonacion = await Donacion.findByIdAndDelete(req.params.id);
     
@@ -361,7 +385,7 @@ app.delete("/donaciones/:id", async (req, res) => {
 // ENDPOINTS PROYECTOS
 
 // GET proyectos
-app.get("/proyectos", async (req, res) => {
+app.get("/proyectos", authenticateToken, async (req, res) => {
   try {
     const proyectos = await Proyecto.find();
     res.json(proyectos);
@@ -371,7 +395,7 @@ app.get("/proyectos", async (req, res) => {
 });
 
 // GET proyecto by ID
-app.get("/proyectos/:id", async (req, res) => {
+app.get("/proyectos/:id", authenticateToken, async (req, res) => {
   try {
     const proyecto = await Proyecto.findById(req.params.id);
     if (!proyecto) return res.status(404).send("Proyecto not found");
@@ -382,7 +406,7 @@ app.get("/proyectos/:id", async (req, res) => {
 });
 
 // POST proyecto
-app.post("/proyectos", async (req, res) => {
+app.post("/proyectos", authenticateToken, async (req, res) => {
   try {
     const { nombre, ubicacion, financiamiento_requerido, financiamiento_actual } = req.body;
     const newProyecto = new Proyecto({
@@ -399,7 +423,7 @@ app.post("/proyectos", async (req, res) => {
 });
 
 // PUT proyecto (update by ID)
-app.put("/proyectos/:id", async (req, res) => {
+app.put("/proyectos/:id", authenticateToken, async (req, res) => {
   try {
     const updatedProyecto = await Proyecto.findByIdAndUpdate(
       req.params.id,
@@ -414,7 +438,7 @@ app.put("/proyectos/:id", async (req, res) => {
 });
 
 // DELETE proyecto by ID
-app.delete("/proyectos/:id", async (req, res) => {
+app.delete("/proyectos/:id", authenticateToken, async (req, res) => {
   try {
     const deletedProyecto = await Proyecto.findByIdAndDelete(req.params.id);
     if (!deletedProyecto) return res.status(404).send("Proyecto not found");
@@ -627,8 +651,9 @@ app.get("/dashboard/progreso-proyecto", async (req, res) => {
 });
 
 // GET usuario por nombre de usuario
-app.get("/usuarios/username/:username", async (req, res) => {
+app.get("/usuarios/username/:username", authenticateToken, async (req, res) => {
   try {
+
     const usuario = await Usuario.findOne({ usuario: req.params.username });
     if (!usuario) return res.status(404).send("Usuario not found");
     res.json(usuario);
@@ -698,6 +723,7 @@ app.post("/auth", async (req, res) => {
       { expiresIn: "1h" }
     );
     console.log("Token generated:", token);
+
 
     res.json({ success: true, token, rol: user.rol, nombre: user.nombre });
   } catch (err) {
